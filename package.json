@@ -1,0 +1,48 @@
+{
+  "name": "json-response-generator",
+  "version": "2.0.0",
+  "description": "JSON Response Generator with Next.js frontend and Go API backend",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"go run main.go\" \"cd frontend && npm run dev\"",
+    "dev:api": "go run main.go",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "build:api": "go build -o json-response-generator main.go",
+    "start": "concurrently \"./json-response-generator\" \"cd frontend && npm start\"",
+    "install:all": "go mod tidy && cd frontend && npm install",
+    "test": "cd frontend && npm run test",
+    "test:api": "go test ./...",
+    "lint": "cd frontend && npm run lint",
+    "lint:api": "golangci-lint run",
+    "type-check": "cd frontend && npm run type-check"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "go": ">=1.21.0"
+  },
+  "keywords": [
+    "json",
+    "api",
+    "customs",
+    "indonesia",
+    "nextjs",
+    "golang",
+    "gin",
+    "excel",
+    "typescript"
+  ],
+  "author": "JSON Response Generator Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/json-response-generator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-org/json-response-generator/issues"
+  },
+  "homepage": "https://github.com/your-org/json-response-generator#readme"
+}

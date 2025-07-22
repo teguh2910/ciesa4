@@ -1,0 +1,112 @@
+# Go build artifacts
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+main
+json-response-generator
+json-response-generator.exe
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool
+*.out
+
+# Dependency directories
+vendor/
+
+# Go workspace file
+go.work
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Temporary folders
+tmp/
+temp/
+
+# Git
+.git
+.gitignore
+README.md
+README_*.md
+
+# Docker
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# Frontend directory
+frontend/
+
+# Documentation
+docs/
+*.md
+
+# Scripts
+scripts/
+
+# Test files
+*_test.go
+testdata/
+
+# Benchmarks
+*_bench.go
+
+# Examples
+examples/
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+.circleci/
+
+# Makefile
+Makefile
+
+# Air (hot reload) config
+.air.toml
+
+# Delve debugger
+__debug_bin
+
+# GoReleaser
+.goreleaser.yml
+dist/
