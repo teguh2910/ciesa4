@@ -64,20 +64,19 @@ temp/
 # Git
 .git
 .gitignore
-README.md
-README_*.md
 
 # Docker
-Dockerfile*
 docker-compose*
 .dockerignore
 
-# Frontend directory
-frontend/
+# Frontend build artifacts (but not the source)
+frontend/.next/
+frontend/node_modules/
+frontend/out/
+frontend/.env*
 
 # Documentation
 docs/
-*.md
 
 # Scripts
 scripts/

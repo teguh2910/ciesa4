@@ -6,7 +6,13 @@ class ApiClient {
   private baseURL: string;
 
   constructor() {
-    this.baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
+    // In production (Docker), use relative paths so nginx can proxy
+    // In development, use the full URL to the backend
+    if (process.env.NODE_ENV === 'production') {
+      this.baseURL = '';  // Use relative paths in production
+    } else {
+      this.baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
+    }
     this.initializeClient();
   }
 

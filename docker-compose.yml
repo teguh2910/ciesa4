@@ -1,71 +1,60 @@
 version: '3.8'
 
 services:
-  # Go Backend API - Optimized Image
-  api:
-    image: json-response-generator-backend:optimized
-    container_name: json-generator-api
+  # Combined Frontend + Backend Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: json-generator-app
     ports:
-      - "5001:5001"
+      - "80:80"
     environment:
-      - PORT=5001
-      - HOST=0.0.0.0
-      - GIN_MODE=release
-      - FRONTEND_URL=http://localhost:3000
       - TZ=UTC
+      - NODE_ENV=production
+      - GIN_MODE=release
     volumes:
       - uploads:/uploads
       - logs:/logs
     networks:
       - json-generator-network
     restart: unless-stopped
-    # Temporarily disable health check for optimized image
-    # healthcheck:
-    #   test: ["CMD", "/main", "--health-check"]
-    #   interval: 30s
-    #   timeout: 10s
-    #   retries: 3
-    #   start_period: 10s
-
-  # Next.js Frontend - Optimized Image
-  frontend:
-    image: json-response-generator-frontend:optimized
-    container_name: json-generator-frontend
-    ports:
-      - "3000:3000"
-    environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:5001
-      - NODE_ENV=production
-      - PORT=3000
-      - HOSTNAME=0.0.0.0
-    depends_on:
-      - api
-    networks:
-      - json-generator-network
-    restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/health"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 15s
+      start_period: 30s
 
-  # Nginx Reverse Proxy (Optional)
-  nginx:
-    image: nginx:alpine
-    container_name: json-generator-nginx
+  # Development version (optional)
+  app-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: json-generator-app-dev
     ports:
-      - "80:80"
-      - "443:443"
+      - "8080:80"
+    environment:
+      - TZ=UTC
+      - NODE_ENV=development
+      - GIN_MODE=debug
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx/ssl:/etc/nginx/ssl:ro
-    depends_on:
-      - api
-      - frontend
+      - uploads:/uploads
+      - logs:/logs
+      - .:/app/src:ro  # Mount source for development
     networks:
       - json-generator-network
     restart: unless-stopped
+    profiles:
+      - dev
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
 networks:
   json-generator-network:
