@@ -46,16 +46,16 @@ docker-compose down
 
 ```bash
 # Build the image
-docker build -t json-response-generator:latest .
+docker build -t go-ciesa-4.0:latest .
 
 # Run the container
 docker run -d \
-  --name json-generator-app \
+  --name go-ciesa-app \
   -p 80:80 \
-  -v json-generator-uploads:/uploads \
-  -v json-generator-logs:/logs \
+  -v go-ciesa-uploads:/uploads \
+  -v go-ciesa-logs:/logs \
   --restart unless-stopped \
-  json-response-generator:latest
+  go-ciesa-4.0:latest
 ```
 
 ## Access Points
@@ -76,7 +76,7 @@ Once running, the application is available at:
 Options:
   -t, --tag TAG        Docker image tag (default: latest)
   -p, --port PORT      Host port to bind (default: 80)
-  -n, --name NAME      Container name (default: json-generator-app)
+  -n, --name NAME      Container name (default: go-ciesa-app)
   --build-only         Only build the image, don't run
   --clean              Clean up existing containers and images
   -h, --help           Show help message
@@ -90,7 +90,7 @@ Options:
 Options:
   -Tag TAG             Docker image tag (default: latest)
   -Port PORT           Host port to bind (default: 80)
-  -Name NAME           Container name (default: json-generator-app)
+  -Name NAME           Container name (default: go-ciesa-app)
   -BuildOnly           Only build the image, don't run
   -Clean               Clean up existing containers and images
   -Help                Show help message
@@ -109,7 +109,7 @@ Options:
 ./docker-build.sh --clean
 
 # Custom container name
-./docker-build.sh -n my-json-generator
+./docker-build.sh -n my-go-ciesa
 ```
 
 ## Container Management
@@ -119,22 +119,22 @@ Options:
 docker ps
 
 # View logs
-docker logs json-generator-app
+docker logs go-ciesa-app
 
 # Follow logs in real-time
-docker logs -f json-generator-app
+docker logs -f go-ciesa-app
 
 # Stop container
-docker stop json-generator-app
+docker stop go-ciesa-app
 
 # Start stopped container
-docker start json-generator-app
+docker start go-ciesa-app
 
 # Remove container
-docker rm json-generator-app
+docker rm go-ciesa-app
 
 # Remove image
-docker rmi json-response-generator:latest
+docker rmi go-ciesa-4.0:latest
 ```
 
 ## Development Mode
@@ -152,8 +152,8 @@ docker-compose --profile dev up
 
 The container uses named volumes for persistent data:
 
-- `json-generator-uploads`: Stores uploaded files
-- `json-generator-logs`: Stores application logs
+- `go-ciesa-uploads`: Stores uploaded files
+- `go-ciesa-logs`: Stores application logs
 
 ## Health Checks
 
@@ -187,7 +187,7 @@ Supervisor manages three processes:
 ### Container won't start
 ```bash
 # Check container logs
-docker logs json-generator-app
+docker logs go-ciesa-app
 
 # Check if ports are available
 netstat -tulpn | grep :80
@@ -196,22 +196,22 @@ netstat -tulpn | grep :80
 ### Build fails
 ```bash
 # Clean build with verbose output
-docker build --no-cache --progress=plain -t json-response-generator:latest .
+docker build --no-cache --progress=plain -t go-ciesa-4.0:latest .
 ```
 
 ### Permission issues
 ```bash
 # Check volume permissions
-docker exec -it json-generator-app ls -la /uploads /logs
+docker exec -it go-ciesa-app ls -la /uploads /logs
 ```
 
 ### Service not responding
 ```bash
 # Check internal processes
-docker exec -it json-generator-app supervisorctl status
+docker exec -it go-ciesa-app supervisorctl status
 
 # Check nginx configuration
-docker exec -it json-generator-app nginx -t
+docker exec -it go-ciesa-app nginx -t
 ```
 
 ## Migration from Previous Setup

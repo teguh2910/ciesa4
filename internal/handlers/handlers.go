@@ -24,15 +24,17 @@ type Handlers struct {
 	jsonGenerator *services.JsonGenerator
 	excelHandler  *services.ExcelHandler
 	apiClient     *services.ApiClient
+	oauthService  *services.OAuthService
 	config        *config.Config
 }
 
 // New creates a new Handlers instance
-func New(jsonGenerator *services.JsonGenerator, excelHandler *services.ExcelHandler, apiClient *services.ApiClient) *Handlers {
+func New(jsonGenerator *services.JsonGenerator, excelHandler *services.ExcelHandler, apiClient *services.ApiClient, oauthService *services.OAuthService) *Handlers {
 	return &Handlers{
 		jsonGenerator: jsonGenerator,
 		excelHandler:  excelHandler,
 		apiClient:     apiClient,
+		oauthService:  oauthService,
 		config:        config.Load(),
 	}
 }
@@ -303,4 +305,168 @@ func (h *Handlers) saveUploadedFile(file multipart.File, header *multipart.FileH
 	}
 
 	return tempFile.Name(), nil
+}
+
+// OAuth 2.0 Handlers
+
+// OAuthLogin handles OAuth 2.0 login
+func (h *Handlers) OAuthLogin(c *gin.Context) {
+	var req models.OAuthLoginApiRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		middleware.HandleError(c, http.StatusBadRequest, "Invalid request format", err)
+		return
+	}
+
+	// Validate request
+	if req.Username == "" || req.Password == "" {
+		middleware.HandleError(c, http.StatusBadRequest, "Username and password are required", nil)
+		return
+	}
+
+	logrus.WithFields(logrus.Fields{
+		"username": req.Username,
+	}).Info("OAuth 2.0 login attempt")
+
+	// Perform login
+	tokenInfo, err := h.oauthService.Login(req.Username, req.Password)
+	if err != nil {
+		logrus.WithError(err).Error("OAuth 2.0 login failed")
+		middleware.HandleError(c, http.StatusUnauthorized, "Login failed", err)
+		return
+	}
+
+	logrus.WithFields(logrus.Fields{
+		"username":   req.Username,
+		"expires_at": tokenInfo.ExpiresAt,
+	}).Info("OAuth 2.0 login successful")
+
+	middleware.HandleSuccess(c, gin.H{
+		"message":      "Login successful",
+		"access_token": tokenInfo.AccessToken,
+		"expires_at":   tokenInfo.ExpiresAt,
+		"token_type":   tokenInfo.TokenType,
+		"scope":        tokenInfo.Scope,
+	})
+}
+
+// OAuthRefresh handles OAuth 2.0 token refresh
+func (h *Handlers) OAuthRefresh(c *gin.Context) {
+	logrus.Info("OAuth 2.0 token refresh attempt")
+
+	// Perform token refresh
+	tokenInfo, err := h.oauthService.RefreshToken()
+	if err != nil {
+		logrus.WithError(err).Error("OAuth 2.0 token refresh failed")
+		middleware.HandleError(c, http.StatusUnauthorized, "Token refresh failed", err)
+		return
+	}
+
+	logrus.WithFields(logrus.Fields{
+		"expires_at": tokenInfo.ExpiresAt,
+	}).Info("OAuth 2.0 token refresh successful")
+
+	middleware.HandleSuccess(c, gin.H{
+		"message":      "Token refresh successful",
+		"access_token": tokenInfo.AccessToken,
+		"expires_at":   tokenInfo.ExpiresAt,
+		"token_type":   tokenInfo.TokenType,
+		"scope":        tokenInfo.Scope,
+	})
+}
+
+// OAuthStatus returns the current OAuth 2.0 token status
+func (h *Handlers) OAuthStatus(c *gin.Context) {
+	tokenInfo := h.oauthService.GetTokenInfo()
+	isValid := h.oauthService.IsTokenValid()
+
+	if tokenInfo == nil {
+		middleware.HandleSuccess(c, gin.H{
+			"authenticated": false,
+			"message":       "No token available",
+		})
+		return
+	}
+
+	middleware.HandleSuccess(c, gin.H{
+		"authenticated": isValid,
+		"expires_at":    tokenInfo.ExpiresAt,
+		"token_type":    tokenInfo.TokenType,
+		"scope":         tokenInfo.Scope,
+		"time_left":     time.Until(tokenInfo.ExpiresAt).Seconds(),
+	})
+}
+
+// OAuthConfig handles OAuth 2.0 configuration
+func (h *Handlers) OAuthConfig(c *gin.Context) {
+	switch c.Request.Method {
+	case "GET":
+		h.getOAuthConfig(c)
+	case "POST":
+		h.setOAuthConfig(c)
+	default:
+		middleware.HandleError(c, http.StatusMethodNotAllowed, "Method not allowed", nil)
+	}
+}
+
+func (h *Handlers) getOAuthConfig(c *gin.Context) {
+	config := h.oauthService.GetConfig()
+	if config == nil {
+		config = h.oauthService.GetDefaultConfig()
+	}
+
+	// Don't return sensitive information
+	safeConfig := gin.H{
+		"token_url":    config.TokenURL,
+		"refresh_url":  config.RefreshURL,
+		"username":     config.Username,
+		"has_password": config.Password != "",
+	}
+
+	middleware.HandleSuccess(c, safeConfig)
+}
+
+func (h *Handlers) setOAuthConfig(c *gin.Context) {
+	var req models.OAuthConfigRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		middleware.HandleError(c, http.StatusBadRequest, "Invalid request format", err)
+		return
+	}
+
+	// Create OAuth config
+	config := &models.OAuth2Config{
+		TokenURL:   req.TokenURL,
+		RefreshURL: req.RefreshURL,
+		Username:   req.Username,
+		Password:   req.Password,
+	}
+
+	// Validate config
+	if err := h.oauthService.ValidateConfig(config); err != nil {
+		middleware.HandleError(c, http.StatusBadRequest, "Invalid configuration", err)
+		return
+	}
+
+	// Set config
+	h.oauthService.SetConfig(config)
+
+	logrus.WithFields(logrus.Fields{
+		"token_url":   config.TokenURL,
+		"refresh_url": config.RefreshURL,
+		"username":    config.Username,
+	}).Info("OAuth 2.0 configuration updated")
+
+	middleware.HandleSuccess(c, gin.H{
+		"message": "OAuth 2.0 configuration updated successfully",
+	})
+}
+
+// OAuthLogout clears the stored OAuth 2.0 token
+func (h *Handlers) OAuthLogout(c *gin.Context) {
+	h.oauthService.ClearToken()
+
+	logrus.Info("OAuth 2.0 logout completed")
+
+	middleware.HandleSuccess(c, gin.H{
+		"message": "Logout successful",
+	})
 }

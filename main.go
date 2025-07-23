@@ -31,10 +31,11 @@ func main() {
 	// Initialize services
 	jsonGenerator := services.NewJsonGenerator()
 	excelHandler := services.NewExcelHandler()
-	apiClient := services.NewApiClient()
+	oauthService := services.NewOAuthService()
+	apiClient := services.NewApiClientWithOAuth(oauthService)
 
 	// Initialize handlers
-	h := handlers.New(jsonGenerator, excelHandler, apiClient)
+	h := handlers.New(jsonGenerator, excelHandler, apiClient, oauthService)
 
 	// Setup Gin router
 	if !cfg.Debug {
@@ -82,6 +83,16 @@ func main() {
 
 		// Sample data
 		api.GET("/sample-data", h.GetSampleData)
+
+		// OAuth 2.0 endpoints
+		oauth := api.Group("/oauth")
+		{
+			oauth.POST("/login", h.OAuthLogin)
+			oauth.POST("/refresh", h.OAuthRefresh)
+			oauth.GET("/status", h.OAuthStatus)
+			oauth.Any("/config", h.OAuthConfig)
+			oauth.POST("/logout", h.OAuthLogout)
+		}
 	}
 
 	// Start server
@@ -98,7 +109,7 @@ func main() {
 
 func setupLogging(debug bool) {
 	logrus.SetFormatter(&logrus.JSONFormatter{})
-	
+
 	if debug {
 		logrus.SetLevel(logrus.DebugLevel)
 	} else {

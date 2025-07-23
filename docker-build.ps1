@@ -1,4 +1,4 @@
-# Combined Docker Build Script for JSON Response Generator (PowerShell)
+# Combined Docker Build Script for GO-CIESA-4.0 (PowerShell)
 # This script builds and runs the combined frontend + backend container
 
 [CmdletBinding()]
@@ -10,7 +10,7 @@ param(
     [int]$Port = 80,
 
     [Parameter(Mandatory=$false)]
-    [string]$Name = "json-generator-app",
+    [string]$Name = "go-ciesa-app",
 
     [Parameter(Mandatory=$false)]
     [switch]$BuildOnly,
@@ -54,14 +54,14 @@ if ($Help) {
     Write-Host "Options:"
     Write-Host "  -Tag TAG             Docker image tag (default: latest)"
     Write-Host "  -Port PORT           Host port to bind (default: 80)"
-    Write-Host "  -Name NAME           Container name (default: json-generator-app)"
+    Write-Host "  -Name NAME           Container name (default: go-ciesa-app)"
     Write-Host "  -BuildOnly           Only build the image, don't run"
     Write-Host "  -Clean               Clean up existing containers and images"
     Write-Host "  -Help                Show this help message"
     exit 0
 }
 
-$ImageName = "json-response-generator"
+$ImageName = "go-ciesa-4.0"
 $ContainerName = $Name
 
 # Clean up if requested
@@ -124,8 +124,8 @@ Write-Status "Starting container: $ContainerName on port $Port"
 $runResult = docker run -d `
     --name $ContainerName `
     -p "${Port}:80" `
-    -v "json-generator-uploads:/uploads" `
-    -v "json-generator-logs:/logs" `
+    -v "go-ciesa-uploads:/uploads" `
+    -v "go-ciesa-logs:/logs" `
     --restart unless-stopped `
     "${ImageName}:${Tag}"
 

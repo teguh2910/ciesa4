@@ -6,6 +6,7 @@ yarn-error.log*
 
 # Next.js build output
 .next/
+.next/cache/
 out/
 
 # Production build

@@ -7,6 +7,37 @@ export interface ApiResponse<T = any> {
   details?: string[];
 }
 
+// OAuth 2.0 Types
+export interface OAuthTokenInfo {
+  access_token: string;
+  refresh_token: string;
+  expires_at: string;
+  token_type: string;
+  scope: string;
+}
+
+export interface OAuthConfig {
+  token_url: string;
+  refresh_url: string;
+  username: string;
+  password: string;
+  has_password?: boolean;
+}
+
+export interface OAuthLoginRequest {
+  username: string;
+  password: string;
+}
+
+export interface OAuthStatus {
+  authenticated: boolean;
+  expires_at?: string;
+  token_type?: string;
+  scope?: string;
+  time_left?: number;
+  message?: string;
+}
+
 // Configuration Types
 export interface ApiConfig {
   endpoint: string;
@@ -14,6 +45,9 @@ export interface ApiConfig {
   username?: string;
   password?: string;
   timeout?: number;
+  auth_type?: 'none' | 'api_key' | 'basic' | 'oauth2';
+  oauth2_config?: OAuthConfig;
+  token_info?: OAuthTokenInfo;
 }
 
 export interface AppConfig {

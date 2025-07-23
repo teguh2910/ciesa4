@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
-import { ApiResponse, ApiConfig, AppConfig, ExcelData, ResponseData } from '@/types';
+import { ApiResponse, ApiConfig, AppConfig, ExcelData, ResponseData, OAuthLoginRequest, OAuthConfig, OAuthStatus, OAuthTokenInfo } from '@/types';
 
 class ApiClient {
   private client: AxiosInstance | null = null;
@@ -185,6 +185,61 @@ class ApiClient {
       api_config: apiConfig,
       dry_run: dryRun,
     });
+    return response.data;
+  }
+
+  // OAuth 2.0 methods
+  async oauthLogin(credentials: OAuthLoginRequest): Promise<ApiResponse<OAuthTokenInfo>> {
+    if (typeof window === 'undefined') {
+      throw new Error('API client can only be used on the client side');
+    }
+    this.ensureClientInitialized();
+    const response = await this.client!.post('/api/oauth/login', credentials);
+    return response.data;
+  }
+
+  async oauthRefresh(): Promise<ApiResponse<OAuthTokenInfo>> {
+    if (typeof window === 'undefined') {
+      throw new Error('API client can only be used on the client side');
+    }
+    this.ensureClientInitialized();
+    const response = await this.client!.post('/api/oauth/refresh');
+    return response.data;
+  }
+
+  async oauthStatus(): Promise<ApiResponse<OAuthStatus>> {
+    if (typeof window === 'undefined') {
+      throw new Error('API client can only be used on the client side');
+    }
+    this.ensureClientInitialized();
+    const response = await this.client!.get('/api/oauth/status');
+    return response.data;
+  }
+
+  async getOAuthConfig(): Promise<ApiResponse<OAuthConfig>> {
+    if (typeof window === 'undefined') {
+      throw new Error('API client can only be used on the client side');
+    }
+    this.ensureClientInitialized();
+    const response = await this.client!.get('/api/oauth/config');
+    return response.data;
+  }
+
+  async setOAuthConfig(config: OAuthConfig): Promise<ApiResponse> {
+    if (typeof window === 'undefined') {
+      throw new Error('API client can only be used on the client side');
+    }
+    this.ensureClientInitialized();
+    const response = await this.client!.post('/api/oauth/config', config);
+    return response.data;
+  }
+
+  async oauthLogout(): Promise<ApiResponse> {
+    if (typeof window === 'undefined') {
+      throw new Error('API client can only be used on the client side');
+    }
+    this.ensureClientInitialized();
+    const response = await this.client!.post('/api/oauth/logout');
     return response.data;
   }
 

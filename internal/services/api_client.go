@@ -14,7 +14,8 @@ import (
 
 // ApiClient service for sending data to external APIs
 type ApiClient struct {
-	httpClient *http.Client
+	httpClient   *http.Client
+	oauthService *OAuthService
 }
 
 // NewApiClient creates a new ApiClient instance
@@ -23,6 +24,17 @@ func NewApiClient() *ApiClient {
 		httpClient: &http.Client{
 			Timeout: 30 * time.Second,
 		},
+		oauthService: NewOAuthService(),
+	}
+}
+
+// NewApiClientWithOAuth creates a new ApiClient instance with OAuth service
+func NewApiClientWithOAuth(oauthService *OAuthService) *ApiClient {
+	return &ApiClient{
+		httpClient: &http.Client{
+			Timeout: 30 * time.Second,
+		},
+		oauthService: oauthService,
 	}
 }
 
@@ -62,8 +74,8 @@ func (ac *ApiClient) SendData(data *models.ResponseData, config *models.ApiConfi
 	if dryRun {
 		logrus.Info("Dry run mode - data would be sent to:", config.Endpoint)
 		return true, map[string]interface{}{
-			"message": "Dry run completed - no data was actually sent",
-			"endpoint": config.Endpoint,
+			"message":   "Dry run completed - no data was actually sent",
+			"endpoint":  config.Endpoint,
 			"data_size": fmt.Sprintf("%d bytes", len(fmt.Sprintf("%+v", data))),
 		}, nil
 	}
@@ -88,13 +100,37 @@ func (ac *ApiClient) SendData(data *models.ResponseData, config *models.ApiConfi
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("User-Agent", "JSON-Response-Generator/2.0.0")
 
-	// Add authentication if provided
-	if config.APIKey != "" {
-		req.Header.Set("X-API-Key", config.APIKey)
-	}
+	// Add authentication based on auth type
+	switch config.AuthType {
+	case "api_key":
+		if config.APIKey != "" {
+			req.Header.Set("X-API-Key", config.APIKey)
+		}
+	case "basic":
+		if config.Username != "" && config.Password != "" {
+			req.SetBasicAuth(config.Username, config.Password)
+		}
+	case "oauth2":
+		if config.OAuth2Config != nil {
+			// Set OAuth configuration if provided
+			ac.oauthService.SetConfig(config.OAuth2Config)
 
-	if config.Username != "" && config.Password != "" {
-		req.SetBasicAuth(config.Username, config.Password)
+			// Get valid access token
+			accessToken, err := ac.oauthService.GetValidToken()
+			if err != nil {
+				return false, nil, fmt.Errorf("failed to get valid OAuth token: %w", err)
+			}
+
+			req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", accessToken))
+		}
+	default:
+		// Legacy support for backward compatibility
+		if config.APIKey != "" {
+			req.Header.Set("X-API-Key", config.APIKey)
+		}
+		if config.Username != "" && config.Password != "" {
+			req.SetBasicAuth(config.Username, config.Password)
+		}
 	}
 
 	// Set timeout if specified
@@ -174,5 +210,43 @@ func (ac *ApiClient) GetDefaultConfig() *models.ApiConfig {
 		Username: "",
 		Password: "",
 		Timeout:  30,
+		AuthType: "none",
 	}
+}
+
+// OAuth 2.0 specific methods
+
+// SetOAuthConfig sets the OAuth 2.0 configuration
+func (ac *ApiClient) SetOAuthConfig(config *models.OAuth2Config) {
+	ac.oauthService.SetConfig(config)
+}
+
+// GetOAuthConfig returns the current OAuth 2.0 configuration
+func (ac *ApiClient) GetOAuthConfig() *models.OAuth2Config {
+	return ac.oauthService.GetConfig()
+}
+
+// OAuthLogin performs OAuth 2.0 login
+func (ac *ApiClient) OAuthLogin(username, password string) (*models.OAuthTokenInfo, error) {
+	return ac.oauthService.Login(username, password)
+}
+
+// OAuthRefresh refreshes the OAuth 2.0 token
+func (ac *ApiClient) OAuthRefresh() (*models.OAuthTokenInfo, error) {
+	return ac.oauthService.RefreshToken()
+}
+
+// GetOAuthTokenInfo returns the current OAuth token information
+func (ac *ApiClient) GetOAuthTokenInfo() *models.OAuthTokenInfo {
+	return ac.oauthService.GetTokenInfo()
+}
+
+// IsOAuthTokenValid checks if the current OAuth token is valid
+func (ac *ApiClient) IsOAuthTokenValid() bool {
+	return ac.oauthService.IsTokenValid()
+}
+
+// ClearOAuthToken clears the stored OAuth token
+func (ac *ApiClient) ClearOAuthToken() {
+	ac.oauthService.ClearToken()
 }

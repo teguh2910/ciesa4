@@ -35,6 +35,7 @@ declare namespace __next_route_internal_types__ {
     | `/excel-upload`
     | `/manual-input`
     | `/test-forms`
+    | `/demo-schema`
   type DynamicRoutes<T extends string = string> = 
     | `/api/${OptionalCatchAllSlug<T>}`
 

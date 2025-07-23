@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Combined Docker Build Script for JSON Response Generator
+# Combined Docker Build Script for GO-CIESA-4.0
 # This script builds and runs the combined frontend + backend container
 
 set -e
@@ -30,9 +30,9 @@ print_error() {
 }
 
 # Default values
-IMAGE_NAME="json-response-generator"
+IMAGE_NAME="go-ciesa-4.0"
 TAG="latest"
-CONTAINER_NAME="json-generator-app"
+CONTAINER_NAME="go-ciesa-app"
 PORT="80"
 BUILD_ONLY=false
 CLEAN=false
@@ -133,8 +133,8 @@ print_status "Starting container: $CONTAINER_NAME on port $PORT"
 if docker run -d \
     --name "$CONTAINER_NAME" \
     -p "$PORT:80" \
-    -v json-generator-uploads:/uploads \
-    -v json-generator-logs:/logs \
+    -v go-ciesa-uploads:/uploads \
+    -v go-ciesa-logs:/logs \
     --restart unless-stopped \
     "$IMAGE_NAME:$TAG"; then
     

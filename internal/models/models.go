@@ -9,21 +9,21 @@ type BarangDokumen struct {
 
 // BarangTarif represents tariff information for goods
 type BarangTarif struct {
-	JumlahSatuan        float64  `json:"jumlahSatuan" validate:"required"`
-	KodeFasilitasTarif  string   `json:"kodeFasilitasTarif" validate:"required"`
-	KodeJenisPungutan   string   `json:"kodeJenisPungutan" validate:"required"`
-	KodeJenisTarif      string   `json:"kodeJenisTarif" validate:"required"`
-	NilaiBayar          float64  `json:"nilaiBayar" validate:"required"`
-	NilaiFasilitas      float64  `json:"nilaiFasilitas" validate:"required"`
-	SeriBarang          int      `json:"seriBarang" validate:"required"`
-	Tarif               float64  `json:"tarif" validate:"required"`
-	TarifFasilitas      *float64 `json:"tarifFasilitas,omitempty"`
-	JumlahKemasan       *int     `json:"jumlahKemasan,omitempty"`
-	KodeKemasan         *string  `json:"kodeKemasan,omitempty"`
-	KodeKomoditiCukai   *string  `json:"kodeKomoditiCukai,omitempty"`
-	KodeSatuanBarang    *string  `json:"kodeSatuanBarang,omitempty"`
-	KodeSubKomoditiCukai *string `json:"kodeSubKomoditiCukai,omitempty"`
-	NilaiSudahDilunasi  *float64 `json:"nilaiSudahDilunasi,omitempty"`
+	JumlahSatuan         float64  `json:"jumlahSatuan" validate:"required"`
+	KodeFasilitasTarif   string   `json:"kodeFasilitasTarif" validate:"required"`
+	KodeJenisPungutan    string   `json:"kodeJenisPungutan" validate:"required"`
+	KodeJenisTarif       string   `json:"kodeJenisTarif" validate:"required"`
+	NilaiBayar           float64  `json:"nilaiBayar" validate:"required"`
+	NilaiFasilitas       float64  `json:"nilaiFasilitas" validate:"required"`
+	SeriBarang           int      `json:"seriBarang" validate:"required"`
+	Tarif                float64  `json:"tarif" validate:"required"`
+	TarifFasilitas       *float64 `json:"tarifFasilitas,omitempty"`
+	JumlahKemasan        *int     `json:"jumlahKemasan,omitempty"`
+	KodeKemasan          *string  `json:"kodeKemasan,omitempty"`
+	KodeKomoditiCukai    *string  `json:"kodeKomoditiCukai,omitempty"`
+	KodeSatuanBarang     *string  `json:"kodeSatuanBarang,omitempty"`
+	KodeSubKomoditiCukai *string  `json:"kodeSubKomoditiCukai,omitempty"`
+	NilaiSudahDilunasi   *float64 `json:"nilaiSudahDilunasi,omitempty"`
 }
 
 // BarangVd represents VD information for goods
@@ -38,78 +38,78 @@ type BarangVd struct {
 
 // Barang represents goods information
 type Barang struct {
-	Asuransi            float64         `json:"asuransi" validate:"required"`
-	Bruto               float64         `json:"bruto" validate:"required"`
-	Cif                 float64         `json:"cif" validate:"required"`
-	CifRupiah           float64         `json:"cifRupiah" validate:"required"`
-	Diskon              float64         `json:"diskon" validate:"required"`
-	Fob                 float64         `json:"fob" validate:"required"`
-	Freight             float64         `json:"freight" validate:"required"`
-	HargaEkspor         float64         `json:"hargaEkspor" validate:"required"`
-	HargaPatokan        float64         `json:"hargaPatokan" validate:"required"`
-	HargaPenyerahan     float64         `json:"hargaPenyerahan" validate:"required"`
-	HargaPerolehan      float64         `json:"hargaPerolehan" validate:"required"`
-	HargaSatuan         float64         `json:"hargaSatuan" validate:"required"`
-	HjeCukai            float64         `json:"hjeCukai" validate:"required"`
-	IsiPerKemasan       float64         `json:"isiPerKemasan" validate:"required"`
-	JumlahBahanBaku     float64         `json:"jumlahBahanBaku" validate:"required"`
-	JumlahDilekatkan    float64         `json:"jumlahDilekatkan" validate:"required"`
-	JumlahKemasan       int             `json:"jumlahKemasan" validate:"required"`
-	JumlahPitaCukai     int             `json:"jumlahPitaCukai" validate:"required"`
-	JumlahRealisasi     float64         `json:"jumlahRealisasi" validate:"required"`
-	JumlahSatuan        float64         `json:"jumlahSatuan" validate:"required"`
-	KapasitasSilinder   float64         `json:"kapasitasSilinder" validate:"required"`
-	KodeJenisKemasan    string          `json:"kodeJenisKemasan" validate:"required"`
-	KodeKondisiBarang   string          `json:"kodeKondisiBarang" validate:"required"`
-	KodeNegaraAsal      string          `json:"kodeNegaraAsal" validate:"required"`
-	KodeSatuanBarang    string          `json:"kodeSatuanBarang" validate:"required"`
-	Merk                string          `json:"merk" validate:"required"`
-	Ndpbm               float64         `json:"ndpbm" validate:"required"`
-	Netto               float64         `json:"netto" validate:"required"`
-	NilaiBarang         float64         `json:"nilaiBarang" validate:"required"`
-	NilaiDanaSawit      float64         `json:"nilaiDanaSawit" validate:"required"`
-	NilaiDevisa         float64         `json:"nilaiDevisa" validate:"required"`
-	NilaiTambah         float64         `json:"nilaiTambah" validate:"required"`
-	PernyataanLartas    string          `json:"pernyataanLartas" validate:"required"`
-	PersentaseImpor     float64         `json:"persentaseImpor" validate:"required"`
-	PosTarif            string          `json:"posTarif" validate:"required"`
-	SaldoAkhir          float64         `json:"saldoAkhir" validate:"required"`
-	SaldoAwal           float64         `json:"saldoAwal" validate:"required"`
-	SeriBarang          int             `json:"seriBarang" validate:"required"`
-	SeriBarangDokAsal   int             `json:"seriBarangDokAsal" validate:"required"`
-	SeriIjin            int             `json:"seriIjin" validate:"required"`
-	TahunPembuatan      int             `json:"tahunPembuatan" validate:"required"`
-	TarifCukai          float64         `json:"tarifCukai" validate:"required"`
-	Tipe                string          `json:"tipe" validate:"required"`
-	Uraian              string          `json:"uraian" validate:"required"`
-	Volume              float64         `json:"volume" validate:"required"`
-	BarangDokumen       []BarangDokumen `json:"barangDokumen"`
-	BarangTarif         []BarangTarif   `json:"barangTarif"`
-	BarangVd            []BarangVd      `json:"barangVd"`
-	BarangSpekKhusus    []interface{}   `json:"barangSpekKhusus"`
-	BarangPemilik       []interface{}   `json:"barangPemilik"`
+	Asuransi          float64         `json:"asuransi" validate:"required"`
+	Bruto             float64         `json:"bruto" validate:"required"`
+	Cif               float64         `json:"cif" validate:"required"`
+	CifRupiah         float64         `json:"cifRupiah" validate:"required"`
+	Diskon            float64         `json:"diskon" validate:"required"`
+	Fob               float64         `json:"fob" validate:"required"`
+	Freight           float64         `json:"freight" validate:"required"`
+	HargaEkspor       float64         `json:"hargaEkspor" validate:"required"`
+	HargaPatokan      float64         `json:"hargaPatokan" validate:"required"`
+	HargaPenyerahan   float64         `json:"hargaPenyerahan" validate:"required"`
+	HargaPerolehan    float64         `json:"hargaPerolehan" validate:"required"`
+	HargaSatuan       float64         `json:"hargaSatuan" validate:"required"`
+	HjeCukai          float64         `json:"hjeCukai" validate:"required"`
+	IsiPerKemasan     float64         `json:"isiPerKemasan" validate:"required"`
+	JumlahBahanBaku   float64         `json:"jumlahBahanBaku" validate:"required"`
+	JumlahDilekatkan  float64         `json:"jumlahDilekatkan" validate:"required"`
+	JumlahKemasan     int             `json:"jumlahKemasan" validate:"required"`
+	JumlahPitaCukai   int             `json:"jumlahPitaCukai" validate:"required"`
+	JumlahRealisasi   float64         `json:"jumlahRealisasi" validate:"required"`
+	JumlahSatuan      float64         `json:"jumlahSatuan" validate:"required"`
+	KapasitasSilinder float64         `json:"kapasitasSilinder" validate:"required"`
+	KodeJenisKemasan  string          `json:"kodeJenisKemasan" validate:"required"`
+	KodeKondisiBarang string          `json:"kodeKondisiBarang" validate:"required"`
+	KodeNegaraAsal    string          `json:"kodeNegaraAsal" validate:"required"`
+	KodeSatuanBarang  string          `json:"kodeSatuanBarang" validate:"required"`
+	Merk              string          `json:"merk" validate:"required"`
+	Ndpbm             float64         `json:"ndpbm" validate:"required"`
+	Netto             float64         `json:"netto" validate:"required"`
+	NilaiBarang       float64         `json:"nilaiBarang" validate:"required"`
+	NilaiDanaSawit    float64         `json:"nilaiDanaSawit" validate:"required"`
+	NilaiDevisa       float64         `json:"nilaiDevisa" validate:"required"`
+	NilaiTambah       float64         `json:"nilaiTambah" validate:"required"`
+	PernyataanLartas  string          `json:"pernyataanLartas" validate:"required"`
+	PersentaseImpor   float64         `json:"persentaseImpor" validate:"required"`
+	PosTarif          string          `json:"posTarif" validate:"required"`
+	SaldoAkhir        float64         `json:"saldoAkhir" validate:"required"`
+	SaldoAwal         float64         `json:"saldoAwal" validate:"required"`
+	SeriBarang        int             `json:"seriBarang" validate:"required"`
+	SeriBarangDokAsal int             `json:"seriBarangDokAsal" validate:"required"`
+	SeriIjin          int             `json:"seriIjin" validate:"required"`
+	TahunPembuatan    int             `json:"tahunPembuatan" validate:"required"`
+	TarifCukai        float64         `json:"tarifCukai" validate:"required"`
+	Tipe              string          `json:"tipe" validate:"required"`
+	Uraian            string          `json:"uraian" validate:"required"`
+	Volume            float64         `json:"volume" validate:"required"`
+	BarangDokumen     []BarangDokumen `json:"barangDokumen"`
+	BarangTarif       []BarangTarif   `json:"barangTarif"`
+	BarangVd          []BarangVd      `json:"barangVd"`
+	BarangSpekKhusus  []interface{}   `json:"barangSpekKhusus"`
+	BarangPemilik     []interface{}   `json:"barangPemilik"`
 }
 
 // Entitas represents entity information
 type Entitas struct {
-	AlamatEntitas        string  `json:"alamatEntitas" validate:"required"`
-	KodeEntitas          string  `json:"kodeEntitas" validate:"required"`
-	NamaEntitas          string  `json:"namaEntitas" validate:"required"`
-	SeriEntitas          int     `json:"seriEntitas" validate:"required"`
-	KodeJenisApi         *string `json:"kodeJenisApi,omitempty"`
-	KodeJenisIdentitas   *string `json:"kodeJenisIdentitas,omitempty"`
-	KodeStatus           *string `json:"kodeStatus,omitempty"`
-	NibEntitas           *string `json:"nibEntitas,omitempty"`
-	NomorIdentitas       *string `json:"nomorIdentitas,omitempty"`
-	KodeNegara           *string `json:"kodeNegara,omitempty"`
+	AlamatEntitas      string  `json:"alamatEntitas" validate:"required"`
+	KodeEntitas        string  `json:"kodeEntitas" validate:"required"`
+	NamaEntitas        string  `json:"namaEntitas" validate:"required"`
+	SeriEntitas        int     `json:"seriEntitas" validate:"required"`
+	KodeJenisApi       *string `json:"kodeJenisApi,omitempty"`
+	KodeJenisIdentitas *string `json:"kodeJenisIdentitas,omitempty"`
+	KodeStatus         *string `json:"kodeStatus,omitempty"`
+	NibEntitas         *string `json:"nibEntitas,omitempty"`
+	NomorIdentitas     *string `json:"nomorIdentitas,omitempty"`
+	KodeNegara         *string `json:"kodeNegara,omitempty"`
 }
 
 // Kemasan represents packaging information
 type Kemasan struct {
-	JumlahKemasan     int    `json:"jumlahKemasan" validate:"required"`
-	KodeJenisKemasan  string `json:"kodeJenisKemasan" validate:"required"`
-	MerkKemasan       string `json:"merkKemasan" validate:"required"`
-	SeriKemasan       int    `json:"seriKemasan" validate:"required"`
+	JumlahKemasan    int    `json:"jumlahKemasan" validate:"required"`
+	KodeJenisKemasan string `json:"kodeJenisKemasan" validate:"required"`
+	MerkKemasan      string `json:"merkKemasan" validate:"required"`
+	SeriKemasan      int    `json:"seriKemasan" validate:"required"`
 }
 
 // Kontainer represents container information
@@ -123,13 +123,13 @@ type Kontainer struct {
 
 // Dokumen represents document information
 type Dokumen struct {
-	IdDokumen       string  `json:"idDokumen" validate:"required"`
-	KodeDokumen     string  `json:"kodeDokumen" validate:"required"`
-	KodeFasilitas   string  `json:"kodeFasilitas" validate:"required"`
-	NomorDokumen    string  `json:"nomorDokumen" validate:"required"`
-	SeriDokumen     int     `json:"seriDokumen" validate:"required"`
-	TanggalDokumen  string  `json:"tanggalDokumen" validate:"required"`
-	NamaFasilitas   *string `json:"namaFasilitas,omitempty"`
+	IdDokumen      string  `json:"idDokumen" validate:"required"`
+	KodeDokumen    string  `json:"kodeDokumen" validate:"required"`
+	KodeFasilitas  string  `json:"kodeFasilitas" validate:"required"`
+	NomorDokumen   string  `json:"nomorDokumen" validate:"required"`
+	SeriDokumen    int     `json:"seriDokumen" validate:"required"`
+	TanggalDokumen string  `json:"tanggalDokumen" validate:"required"`
+	NamaFasilitas  *string `json:"namaFasilitas,omitempty"`
 }
 
 // Pengangkut represents transportation information
@@ -143,60 +143,60 @@ type Pengangkut struct {
 
 // ResponseData represents the main response structure
 type ResponseData struct {
-	AsalData            string        `json:"asalData" validate:"required"`
-	Asuransi            float64       `json:"asuransi" validate:"required"`
-	BiayaPengurang      float64       `json:"biayaPengurang" validate:"required"`
-	BiayaTambahan       float64       `json:"biayaTambahan" validate:"required"`
-	Bruto               float64       `json:"bruto" validate:"required"`
-	Cif                 float64       `json:"cif" validate:"required"`
-	Disclaimer          string        `json:"disclaimer" validate:"required"`
-	FlagVd              string        `json:"flagVd" validate:"required"`
-	Fob                 float64       `json:"fob" validate:"required"`
-	Freight             float64       `json:"freight" validate:"required"`
-	HargaPenyerahan     float64       `json:"hargaPenyerahan" validate:"required"`
-	IdPengguna          string        `json:"idPengguna" validate:"required"`
-	JabatanTtd          string        `json:"jabatanTtd" validate:"required"`
-	JumlahKontainer     int           `json:"jumlahKontainer" validate:"required"`
-	JumlahTandaPengaman int           `json:"jumlahTandaPengaman" validate:"required"`
-	KodeAsuransi        string        `json:"kodeAsuransi" validate:"required"`
-	KodeCaraBayar       string        `json:"kodeCaraBayar" validate:"required"`
-	KodeDokumen         string        `json:"kodeDokumen" validate:"required"`
-	KodeIncoterm        string        `json:"kodeIncoterm" validate:"required"`
-	KodeJenisImpor      string        `json:"kodeJenisImpor" validate:"required"`
-	KodeJenisNilai      string        `json:"kodeJenisNilai" validate:"required"`
-	KodeJenisProsedur   string        `json:"kodeJenisProsedur" validate:"required"`
-	KodeKantor          string        `json:"kodeKantor" validate:"required"`
-	KodePelMuat         string        `json:"kodePelMuat" validate:"required"`
-	KodePelTransit      string        `json:"kodePelTransit" validate:"required"`
-	KodePelTujuan       string        `json:"kodePelTujuan" validate:"required"`
-	KodeTps             string        `json:"kodeTps" validate:"required"`
-	KodeTutupPu         string        `json:"kodeTutupPu" validate:"required"`
-	KodeValuta          string        `json:"kodeValuta" validate:"required"`
-	KotaTtd             string        `json:"kotaTtd" validate:"required"`
-	NamaTtd             string        `json:"namaTtd" validate:"required"`
-	Ndpbm               float64       `json:"ndpbm" validate:"required"`
-	Netto               float64       `json:"netto" validate:"required"`
-	NilaiBarang         float64       `json:"nilaiBarang" validate:"required"`
-	NilaiIncoterm       float64       `json:"nilaiIncoterm" validate:"required"`
-	NilaiMaklon         float64       `json:"nilaiMaklon" validate:"required"`
-	NomorAju            string        `json:"nomorAju" validate:"required"`
-	NomorBc11           string        `json:"nomorBc11" validate:"required"`
-	PosBc11             string        `json:"posBc11" validate:"required"`
-	Seri                int           `json:"seri" validate:"required"`
-	SubPosBc11          string        `json:"subPosBc11" validate:"required"`
-	TanggalAju          string        `json:"tanggalAju" validate:"required"`
-	TanggalBc11         string        `json:"tanggalBc11" validate:"required"`
-	TanggalTiba         string        `json:"tanggalTiba" validate:"required"`
-	TanggalTtd          string        `json:"tanggalTtd" validate:"required"`
-	TotalDanaSawit      float64       `json:"totalDanaSawit" validate:"required"`
-	Volume              float64       `json:"volume" validate:"required"`
-	Vd                  float64       `json:"vd" validate:"required"`
-	Barang              []Barang      `json:"barang"`
-	Entitas             []Entitas     `json:"entitas"`
-	Kemasan             []Kemasan     `json:"kemasan"`
-	Kontainer           []Kontainer   `json:"kontainer"`
-	Dokumen             []Dokumen     `json:"dokumen"`
-	Pengangkut          []Pengangkut  `json:"pengangkut"`
+	AsalData            string       `json:"asalData" validate:"required"`
+	Asuransi            float64      `json:"asuransi" validate:"required"`
+	BiayaPengurang      float64      `json:"biayaPengurang" validate:"required"`
+	BiayaTambahan       float64      `json:"biayaTambahan" validate:"required"`
+	Bruto               float64      `json:"bruto" validate:"required"`
+	Cif                 float64      `json:"cif" validate:"required"`
+	Disclaimer          string       `json:"disclaimer" validate:"required"`
+	FlagVd              string       `json:"flagVd" validate:"required"`
+	Fob                 float64      `json:"fob" validate:"required"`
+	Freight             float64      `json:"freight" validate:"required"`
+	HargaPenyerahan     float64      `json:"hargaPenyerahan" validate:"required"`
+	IdPengguna          string       `json:"idPengguna" validate:"required"`
+	JabatanTtd          string       `json:"jabatanTtd" validate:"required"`
+	JumlahKontainer     int          `json:"jumlahKontainer" validate:"required"`
+	JumlahTandaPengaman int          `json:"jumlahTandaPengaman" validate:"required"`
+	KodeAsuransi        string       `json:"kodeAsuransi" validate:"required"`
+	KodeCaraBayar       string       `json:"kodeCaraBayar" validate:"required"`
+	KodeDokumen         string       `json:"kodeDokumen" validate:"required"`
+	KodeIncoterm        string       `json:"kodeIncoterm" validate:"required"`
+	KodeJenisImpor      string       `json:"kodeJenisImpor" validate:"required"`
+	KodeJenisNilai      string       `json:"kodeJenisNilai" validate:"required"`
+	KodeJenisProsedur   string       `json:"kodeJenisProsedur" validate:"required"`
+	KodeKantor          string       `json:"kodeKantor" validate:"required"`
+	KodePelMuat         string       `json:"kodePelMuat" validate:"required"`
+	KodePelTransit      string       `json:"kodePelTransit" validate:"required"`
+	KodePelTujuan       string       `json:"kodePelTujuan" validate:"required"`
+	KodeTps             string       `json:"kodeTps" validate:"required"`
+	KodeTutupPu         string       `json:"kodeTutupPu" validate:"required"`
+	KodeValuta          string       `json:"kodeValuta" validate:"required"`
+	KotaTtd             string       `json:"kotaTtd" validate:"required"`
+	NamaTtd             string       `json:"namaTtd" validate:"required"`
+	Ndpbm               float64      `json:"ndpbm" validate:"required"`
+	Netto               float64      `json:"netto" validate:"required"`
+	NilaiBarang         float64      `json:"nilaiBarang" validate:"required"`
+	NilaiIncoterm       float64      `json:"nilaiIncoterm" validate:"required"`
+	NilaiMaklon         float64      `json:"nilaiMaklon" validate:"required"`
+	NomorAju            string       `json:"nomorAju" validate:"required"`
+	NomorBc11           string       `json:"nomorBc11" validate:"required"`
+	PosBc11             string       `json:"posBc11" validate:"required"`
+	Seri                int          `json:"seri" validate:"required"`
+	SubPosBc11          string       `json:"subPosBc11" validate:"required"`
+	TanggalAju          string       `json:"tanggalAju" validate:"required"`
+	TanggalBc11         string       `json:"tanggalBc11" validate:"required"`
+	TanggalTiba         string       `json:"tanggalTiba" validate:"required"`
+	TanggalTtd          string       `json:"tanggalTtd" validate:"required"`
+	TotalDanaSawit      float64      `json:"totalDanaSawit" validate:"required"`
+	Volume              float64      `json:"volume" validate:"required"`
+	Vd                  float64      `json:"vd" validate:"required"`
+	Barang              []Barang     `json:"barang"`
+	Entitas             []Entitas    `json:"entitas"`
+	Kemasan             []Kemasan    `json:"kemasan"`
+	Kontainer           []Kontainer  `json:"kontainer"`
+	Dokumen             []Dokumen    `json:"dokumen"`
+	Pengangkut          []Pengangkut `json:"pengangkut"`
 }
 
 // API Response structures
@@ -226,13 +226,63 @@ type ExcelData struct {
 	Pengangkut []interface{} `json:"Pengangkut,omitempty"`
 }
 
-// API configuration
+// OAuth 2.0 Token Response from CEISA 4.0 API
+type OAuthTokenResponse struct {
+	Status  string `json:"status"`
+	Message string `json:"message"`
+	Item    struct {
+		AccessToken      string `json:"access_token"`
+		ExpiresIn        int    `json:"expires_in"`
+		RefreshExpiresIn int    `json:"refresh_expires_in"`
+		RefreshToken     string `json:"refresh_token"`
+		TokenType        string `json:"token_type"`
+		IDToken          string `json:"id_token"`
+		NotBeforePolicy  int    `json:"not-before-policy"`
+		SessionState     string `json:"session_state"`
+		Scope            string `json:"scope"`
+	} `json:"item"`
+}
+
+// OAuth 2.0 Login Request
+type OAuthLoginRequest struct {
+	Username string `json:"username" validate:"required"`
+	Password string `json:"password" validate:"required"`
+}
+
+// OAuth 2.0 Refresh Token Request
+type OAuthRefreshRequest struct {
+	RefreshToken string `json:"refresh_token" validate:"required"`
+}
+
+// OAuth 2.0 Token Info for internal use
+type OAuthTokenInfo struct {
+	AccessToken  string    `json:"access_token"`
+	RefreshToken string    `json:"refresh_token"`
+	ExpiresAt    time.Time `json:"expires_at"`
+	TokenType    string    `json:"token_type"`
+	Scope        string    `json:"scope"`
+}
+
+// API configuration with OAuth 2.0 support
 type ApiConfig struct {
-	Endpoint string `json:"endpoint"`
-	APIKey   string `json:"api_key,omitempty"`
-	Username string `json:"username,omitempty"`
-	Password string `json:"password,omitempty"`
-	Timeout  int    `json:"timeout"`
+	Endpoint     string          `json:"endpoint"`
+	APIKey       string          `json:"api_key,omitempty"`
+	Username     string          `json:"username,omitempty"`
+	Password     string          `json:"password,omitempty"`
+	Timeout      int             `json:"timeout"`
+	AuthType     string          `json:"auth_type"` // "none", "api_key", "basic", "oauth2"
+	OAuth2Config *OAuth2Config   `json:"oauth2_config,omitempty"`
+	TokenInfo    *OAuthTokenInfo `json:"token_info,omitempty"`
+}
+
+// OAuth 2.0 Configuration
+type OAuth2Config struct {
+	TokenURL     string `json:"token_url"`   // CEISA 4.0 token endpoint
+	RefreshURL   string `json:"refresh_url"` // CEISA 4.0 refresh endpoint
+	Username     string `json:"username"`    // CEISA 4.0 username
+	Password     string `json:"password"`    // CEISA 4.0 password
+	ClientID     string `json:"client_id,omitempty"`
+	ClientSecret string `json:"client_secret,omitempty"`
 }
 
 // Request structures
@@ -242,10 +292,27 @@ type GenerateJsonRequest struct {
 
 type SendToApiRequest struct {
 	JsonData  ResponseData `json:"json_data" validate:"required"`
-	ApiConfig *ApiConfig  `json:"api_config,omitempty"`
+	ApiConfig *ApiConfig   `json:"api_config,omitempty"`
 	DryRun    bool         `json:"dry_run"`
 }
 
 type TestConnectionRequest struct {
 	Endpoint string `json:"endpoint,omitempty"`
+}
+
+// OAuth 2.0 Request structures
+type OAuthLoginApiRequest struct {
+	Username string `json:"username" validate:"required"`
+	Password string `json:"password" validate:"required"`
+}
+
+type OAuthRefreshApiRequest struct {
+	RefreshToken string `json:"refresh_token" validate:"required"`
+}
+
+type OAuthConfigRequest struct {
+	TokenURL   string `json:"token_url" validate:"required"`
+	RefreshURL string `json:"refresh_url" validate:"required"`
+	Username   string `json:"username" validate:"required"`
+	Password   string `json:"password" validate:"required"`
 }

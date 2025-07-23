@@ -153,3 +153,44 @@ export function useSampleData() {
     showErrorToast: true,
   });
 }
+
+/**
+ * Hook for OAuth login
+ */
+export function useOAuthLogin() {
+  return useApi((credentials: any) => apiClient.oauthLogin(credentials), {
+    showSuccessToast: true,
+    showErrorToast: true,
+    successMessage: 'Login successful!',
+  });
+}
+
+/**
+ * Hook for OAuth refresh
+ */
+export function useOAuthRefresh() {
+  return useApi(() => apiClient.oauthRefresh(), {
+    showSuccessToast: false,
+    showErrorToast: true,
+  });
+}
+
+/**
+ * Hook for OAuth status
+ */
+export function useOAuthStatus() {
+  return useApi(() => apiClient.oauthStatus(), {
+    showSuccessToast: false,
+    showErrorToast: false,
+  });
+}
+
+/**
+ * Hook for OAuth config
+ */
+export function useOAuthConfigApi() {
+  return useApi(() => apiClient.getOAuthConfig(), {
+    showSuccessToast: false,
+    showErrorToast: true,
+  });
+}

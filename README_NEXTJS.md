@@ -1,4 +1,4 @@
-# JSON Response Generator v2.0 - Go + Next.js Edition
+# GO-CIESA-4.0 - Go + Next.js Edition
 
 A modern, high-performance solution for generating and sending JSON responses to Indonesian customs/import API endpoints. Built with **Next.js frontend** and **Go API backend** for optimal performance, scalability, and user experience.
 
@@ -231,8 +231,8 @@ python start_nextjs.py
 ### Docker Deployment (Optional)
 ```bash
 # Build images
-docker build -t json-generator-api .
-docker build -t json-generator-frontend ./frontend
+docker build -t go-ciesa-api .
+docker build -t go-ciesa-frontend ./frontend
 
 # Run with docker-compose
 docker-compose up -d
@@ -322,7 +322,7 @@ POST /api/send-to-api
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 🆕 What's New in v2.0
+## 🆕 What's New in GO-CIESA-4.0
 
 - **Complete frontend rewrite** with Next.js and TypeScript
 - **Modern UI/UX** with Tailwind CSS and Framer Motion

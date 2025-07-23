@@ -17,12 +17,12 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'),
   title: {
-    default: 'JSON Response Generator',
-    template: '%s | JSON Response Generator',
+    default: 'GO-CIESA-4.0',
+    template: '%s | GO-CIESA-4.0',
   },
   description: 'Generate and send JSON responses for Indonesian customs/import API endpoints',
   keywords: ['JSON', 'API', 'Indonesian customs', 'import', 'export', 'customs declaration'],
-  authors: [{ name: 'JSON Response Generator Team' }],
+  authors: [{ name: 'GO-CIESA-4.0 Team' }],
   robots: 'index, follow',
   icons: {
     icon: '/favicon.svg',
@@ -30,15 +30,15 @@ export const metadata: Metadata = {
     apple: '/favicon.svg',
   },
   openGraph: {
-    title: 'JSON Response Generator',
+    title: 'GO-CIESA-4.0',
     description: 'Generate and send JSON responses for Indonesian customs/import API endpoints',
     type: 'website',
     locale: 'en_US',
-    siteName: 'JSON Response Generator',
+    siteName: 'GO-CIESA-4.0',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'JSON Response Generator',
+    title: 'GO-CIESA-4.0',
     description: 'Generate and send JSON responses for Indonesian customs/import API endpoints',
   },
 };

@@ -5,6 +5,7 @@ import { useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { Plus, Trash2, Package } from 'lucide-react';
 import { Barang } from '@/types';
 import { cn } from '@/lib/utils';
+import { FormField, SelectField, NumberField, TextAreaField } from './FormField';
 
 interface BarangFormProps {
   data: { barang: Barang[] };
@@ -197,54 +198,90 @@ export function BarangForm({ data, onChange, errors }: BarangFormProps) {
                     />
                   </div>
 
-                  <div>
-                    <label className="form-label required">Pos Tarif (HS Code)</label>
-                    <input
-                      type="text"
-                      {...register(`barang.${index}.posTarif`, { required: true })}
-                      className="form-input"
-                      placeholder="Enter HS code"
-                      maxLength={10}
-                    />
-                  </div>
+                  <FormField
+                    label="Pos Tarif (HS Code)"
+                    fieldName="posTarif"
+                    context="barang"
+                    required
+                    type="text"
+                    register={register(`barang.${index}.posTarif`, { required: true })}
+                    maxLength={10}
+                  />
                 </div>
 
                 {/* Financial & Quantity Information */}
                 <div className="space-y-4">
                   <h5 className="font-medium text-gray-900">Financial & Quantity</h5>
-                  
-                  <div>
-                    <label className="form-label required">CIF</label>
-                    <input
-                      type="number"
-                      step="0.01"
-                      {...register(`barang.${index}.cif`, { required: true, min: 0 })}
-                      className="form-input"
-                      placeholder="0.00"
-                    />
-                  </div>
 
-                  <div>
-                    <label className="form-label required">Bruto (Gross Weight)</label>
-                    <input
-                      type="number"
-                      step="0.01"
-                      {...register(`barang.${index}.bruto`, { required: true, min: 0 })}
-                      className="form-input"
-                      placeholder="0.00"
-                    />
-                  </div>
+                  <NumberField
+                    label="CIF"
+                    fieldName="cif"
+                    context="barang"
+                    required
+                    step="0.01"
+                    min={0}
+                    register={register(`barang.${index}.cif`, { required: true, min: 0 })}
+                  />
 
-                  <div>
-                    <label className="form-label required">Netto (Net Weight)</label>
-                    <input
-                      type="number"
-                      step="0.01"
-                      {...register(`barang.${index}.netto`, { required: true, min: 0 })}
-                      className="form-input"
-                      placeholder="0.00"
-                    />
-                  </div>
+                  <NumberField
+                    label="FOB"
+                    fieldName="fob"
+                    context="barang"
+                    required
+                    step="0.01"
+                    min={0}
+                    register={register(`barang.${index}.fob`, { required: true, min: 0 })}
+                  />
+
+                  <NumberField
+                    label="Freight"
+                    fieldName="freight"
+                    context="barang"
+                    required
+                    step="0.01"
+                    min={0}
+                    register={register(`barang.${index}.freight`, { required: true, min: 0 })}
+                  />
+
+                  <NumberField
+                    label="Asuransi"
+                    fieldName="asuransi"
+                    context="barang"
+                    required
+                    step="0.01"
+                    min={0}
+                    register={register(`barang.${index}.asuransi`, { required: true, min: 0 })}
+                  />
+
+                  <NumberField
+                    label="Harga Satuan"
+                    fieldName="hargaSatuan"
+                    context="barang"
+                    required
+                    step="0.01"
+                    min={0}
+                    register={register(`barang.${index}.hargaSatuan`, { required: true, min: 0 })}
+                  />
+
+                  <NumberField
+                    label="Jumlah Kemasan"
+                    fieldName="jumlahKemasan"
+                    context="barang"
+                    required
+                    step="0.01"
+                    min={0}
+                    register={register(`barang.${index}.jumlahKemasan`, { required: true, min: 0 })}
+                  />
+
+                  <NumberField
+                    label="Jumlah Satuan"
+                    fieldName="jumlahSatuan"
+                    context="barang"
+                    required
+                    step="0.0001"
+                    min={0}
+                    register={register(`barang.${index}.jumlahSatuan`, { required: true, min: 0 })}
+                  />
 
                   <div>
                     <label className="form-label required">Jumlah Satuan (Quantity)</label>

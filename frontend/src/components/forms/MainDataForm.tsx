@@ -4,6 +4,7 @@ import { useForm, useWatch } from 'react-hook-form';
 import { useEffect, useRef } from 'react';
 import { MainData } from '@/types';
 import { validateRequiredFields, getTodayString } from '@/lib/utils';
+import { FormField, SelectField, NumberField, DateField } from './FormField';
 
 interface MainDataFormProps {
   data: Partial<MainData>;
@@ -71,51 +72,58 @@ export function MainDataForm({ data, onChange, errors }: MainDataFormProps) {
       <div>
         <h3 className="text-lg font-medium text-gray-900 mb-4">Basic Information</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label className="form-label required">Asal Data</label>
-            <select {...register('asalData', { required: 'Asal Data is required' })} className="form-input">
-              <option value="">Select...</option>
-              <option value="S">S</option>
-              <option value="M">M</option>
-            </select>
-            <p className="form-help">Source of data</p>
-            {formErrors.asalData && <p className="form-error">{formErrors.asalData.message}</p>}
-          </div>
+          <SelectField
+            label="Asal Data"
+            fieldName="asalData"
+            context="main"
+            required
+            register={register('asalData', { required: 'Asal Data is required' })}
+            error={formErrors.asalData?.message}
+          >
+            <option value="">Select...</option>
+            <option value="S">S</option>
+            <option value="M">M</option>
+          </SelectField>
 
-          <div>
-            <label className="form-label required">Disclaimer</label>
-            <select {...register('disclaimer', { required: 'Disclaimer is required' })} className="form-input">
-              <option value="">Select...</option>
-              <option value="1">1</option>
-              <option value="0">0</option>
-            </select>
-            {formErrors.disclaimer && <p className="form-error">{formErrors.disclaimer.message}</p>}
-          </div>
+          <SelectField
+            label="Disclaimer"
+            fieldName="disclaimer"
+            context="main"
+            required
+            register={register('disclaimer', { required: 'Disclaimer is required' })}
+            error={formErrors.disclaimer?.message}
+          >
+            <option value="">Select...</option>
+            <option value="1">1 - Ya</option>
+            <option value="0">0 - Tidak</option>
+          </SelectField>
 
-          <div>
-            <label className="form-label required">Flag VD</label>
-            <select {...register('flagVd', { required: 'Flag VD is required' })} className="form-input">
-              <option value="">Select...</option>
-              <option value="Y">Y</option>
-              <option value="N">N</option>
-            </select>
-            {formErrors.flagVd && <p className="form-error">{formErrors.flagVd.message}</p>}
-          </div>
+          <SelectField
+            label="Flag VD"
+            fieldName="flagVd"
+            context="main"
+            required
+            register={register('flagVd', { required: 'Flag VD is required' })}
+            error={formErrors.flagVd?.message}
+          >
+            <option value="">Select...</option>
+            <option value="Y">Y - Ya</option>
+            <option value="T">T - Tidak</option>
+          </SelectField>
 
-          <div>
-            <label className="form-label required">ID Pengguna</label>
-            <input
-              type="text"
-              {...register('idPengguna', { 
-                required: 'ID Pengguna is required',
-                maxLength: { value: 50, message: 'Maximum 50 characters' }
-              })}
-              className="form-input"
-              placeholder="Enter user ID"
-            />
-            <p className="form-help">User ID for the declaration</p>
-            {formErrors.idPengguna && <p className="form-error">{formErrors.idPengguna.message}</p>}
-          </div>
+          <FormField
+            label="ID Pengguna"
+            fieldName="idPengguna"
+            context="main"
+            required
+            type="text"
+            register={register('idPengguna', {
+              required: 'ID Pengguna is required',
+              maxLength: { value: 50, message: 'Maximum 50 characters' }
+            })}
+            error={formErrors.idPengguna?.message}
+            maxLength={50}
+          />
         </div>
       </div>
 
@@ -123,97 +131,87 @@ export function MainDataForm({ data, onChange, errors }: MainDataFormProps) {
       <div>
         <h3 className="text-lg font-medium text-gray-900 mb-4">Financial Information</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label className="form-label required">CIF</label>
-            <input
-              type="number"
-              step="0.01"
-              {...register('cif', { 
-                required: 'CIF is required',
-                min: { value: 0, message: 'CIF must be positive' }
-              })}
-              className="form-input"
-              placeholder="0.00"
-            />
-            <p className="form-help">Cost, Insurance, and Freight value</p>
-            {formErrors.cif && <p className="form-error">{formErrors.cif.message}</p>}
-          </div>
+          <NumberField
+            label="CIF"
+            fieldName="cif"
+            context="main"
+            required
+            step="0.01"
+            min={0}
+            register={register('cif', {
+              required: 'CIF is required',
+              min: { value: 0, message: 'CIF must be positive' }
+            })}
+            error={formErrors.cif?.message}
+          />
 
-          <div>
-            <label className="form-label required">Bruto</label>
-            <input
-              type="number"
-              step="0.01"
-              {...register('bruto', { 
-                required: 'Bruto is required',
-                min: { value: 0, message: 'Bruto must be positive' }
-              })}
-              className="form-input"
-              placeholder="0.00"
-            />
-            <p className="form-help">Gross weight</p>
-            {formErrors.bruto && <p className="form-error">{formErrors.bruto.message}</p>}
-          </div>
+          <NumberField
+            label="Bruto"
+            fieldName="bruto"
+            context="main"
+            required
+            step="0.0001"
+            min={0}
+            register={register('bruto', {
+              required: 'Bruto is required',
+              min: { value: 0, message: 'Bruto must be positive' }
+            })}
+            error={formErrors.bruto?.message}
+          />
 
-          <div>
-            <label className="form-label required">Netto</label>
-            <input
-              type="number"
-              step="0.01"
-              {...register('netto', { 
-                required: 'Netto is required',
-                min: { value: 0, message: 'Netto must be positive' }
-              })}
-              className="form-input"
-              placeholder="0.00"
-            />
-            <p className="form-help">Net weight</p>
-            {formErrors.netto && <p className="form-error">{formErrors.netto.message}</p>}
-          </div>
+          <NumberField
+            label="Netto"
+            fieldName="netto"
+            context="main"
+            required
+            step="0.0001"
+            min={0}
+            register={register('netto', {
+              required: 'Netto is required',
+              min: { value: 0, message: 'Netto must be positive' }
+            })}
+            error={formErrors.netto?.message}
+          />
 
-          <div>
-            <label className="form-label required">NDPBM</label>
-            <input
-              type="number"
-              step="0.01"
-              {...register('ndpbm', { 
-                required: 'NDPBM is required',
-                min: { value: 0, message: 'NDPBM must be positive' }
-              })}
-              className="form-input"
-              placeholder="0.00"
-            />
-            <p className="form-help">Exchange rate value</p>
-            {formErrors.ndpbm && <p className="form-error">{formErrors.ndpbm.message}</p>}
-          </div>
+          <NumberField
+            label="NDPBM"
+            fieldName="ndpbm"
+            context="main"
+            required
+            step="0.0001"
+            min={0}
+            register={register('ndpbm', {
+              required: 'NDPBM is required',
+              min: { value: 0, message: 'NDPBM must be positive' }
+            })}
+            error={formErrors.ndpbm?.message}
+          />
 
-          <div>
-            <label className="form-label required">VD</label>
-            <input
-              type="number"
-              step="0.01"
-              {...register('vd', { 
-                required: 'VD is required',
-                min: { value: 0, message: 'VD must be positive' }
-              })}
-              className="form-input"
-              placeholder="0.00"
-            />
-            {formErrors.vd && <p className="form-error">{formErrors.vd.message}</p>}
-          </div>
+          <NumberField
+            label="VD"
+            fieldName="vd"
+            context="main"
+            required
+            step="0.01"
+            min={0}
+            register={register('vd', {
+              required: 'VD is required',
+              min: { value: 0, message: 'VD must be positive' }
+            })}
+            error={formErrors.vd?.message}
+          />
 
-          <div>
-            <label className="form-label">Asuransi</label>
-            <input
-              type="number"
-              step="0.01"
-              {...register('asuransi', { 
-                min: { value: 0, message: 'Asuransi must be positive' }
-              })}
-              className="form-input"
-              placeholder="0.00"
-            />
-          </div>
+          <NumberField
+            label="Asuransi"
+            fieldName="asuransi"
+            context="main"
+            step="0.01"
+            min={0}
+            register={register('asuransi', {
+              min: { value: 0, message: 'Asuransi must be positive' }
+            })}
+            error={formErrors.asuransi?.message}
+          />
         </div>
       </div>
 
@@ -221,82 +219,106 @@ export function MainDataForm({ data, onChange, errors }: MainDataFormProps) {
       <div>
         <h3 className="text-lg font-medium text-gray-900 mb-4">Document Information</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label className="form-label required">Nomor AJU</label>
-            <input
-              type="text"
-              {...register('nomorAju', { 
-                required: 'Nomor AJU is required',
-                maxLength: { value: 50, message: 'Maximum 50 characters' }
-              })}
-              className="form-input"
-              placeholder="Enter AJU number"
-            />
-            <p className="form-help">Application number</p>
-            {formErrors.nomorAju && <p className="form-error">{formErrors.nomorAju.message}</p>}
-          </div>
+          <FormField
+            label="Nomor AJU"
+            fieldName="nomorAju"
+            context="main"
+            required
+            type="text"
+            register={register('nomorAju', {
+              required: 'Nomor AJU is required',
+              pattern: {
+                value: /^[A-Za-z0-9]{26}$/,
+                message: 'Nomor AJU must be exactly 26 alphanumeric characters'
+              }
+            })}
+            error={formErrors.nomorAju?.message}
+            maxLength={26}
+            pattern="^[A-Za-z0-9]{26}$"
+          />
 
-          <div>
-            <label className="form-label required">Nomor BC11</label>
-            <input
-              type="text"
-              {...register('nomorBc11', { 
-                required: 'Nomor BC11 is required',
-                maxLength: { value: 20, message: 'Maximum 20 characters' }
-              })}
-              className="form-input"
-              placeholder="Enter BC11 number"
-            />
-            {formErrors.nomorBc11 && <p className="form-error">{formErrors.nomorBc11.message}</p>}
-          </div>
+          <FormField
+            label="Nomor BC11"
+            fieldName="nomorBc11"
+            context="main"
+            required
+            type="text"
+            register={register('nomorBc11', {
+              required: 'Nomor BC11 is required',
+              maxLength: { value: 20, message: 'Maximum 20 characters' }
+            })}
+            error={formErrors.nomorBc11?.message}
+            maxLength={20}
+            helpText="Nomor dokumen BC 1.1 yang terkait"
+          />
 
-          <div>
-            <label className="form-label required">Pos BC11</label>
-            <input
-              type="text"
-              {...register('posBc11', { 
-                required: 'Pos BC11 is required',
-                maxLength: { value: 10, message: 'Maximum 10 characters' }
-              })}
-              className="form-input"
-              placeholder="Enter Pos BC11"
-            />
-            {formErrors.posBc11 && <p className="form-error">{formErrors.posBc11.message}</p>}
-          </div>
+          <FormField
+            label="Pos BC11"
+            fieldName="posBc11"
+            context="main"
+            required
+            type="text"
+            register={register('posBc11', {
+              required: 'Pos BC11 is required',
+              maxLength: { value: 10, message: 'Maximum 10 characters' }
+            })}
+            error={formErrors.posBc11?.message}
+            maxLength={10}
+            helpText="Posisi barang dalam dokumen BC 1.1"
+          />
 
-          <div>
-            <label className="form-label required">Sub Pos BC11</label>
-            <input
-              type="text"
-              {...register('subPosBc11', { 
-                required: 'Sub Pos BC11 is required',
-                maxLength: { value: 20, message: 'Maximum 20 characters' }
-              })}
-              className="form-input"
-              placeholder="Enter Sub Pos BC11"
-            />
-            {formErrors.subPosBc11 && <p className="form-error">{formErrors.subPosBc11.message}</p>}
-          </div>
+          <FormField
+            label="Sub Pos BC11"
+            fieldName="subPosBc11"
+            context="main"
+            required
+            type="text"
+            register={register('subPosBc11', {
+              required: 'Sub Pos BC11 is required',
+              maxLength: { value: 20, message: 'Maximum 20 characters' }
+            })}
+            error={formErrors.subPosBc11?.message}
+            maxLength={20}
+            helpText="Sub posisi barang dalam dokumen BC 1.1"
+          />
 
-          <div>
-            <label className="form-label required">Tanggal AJU</label>
-            <input
-              type="date"
-              {...register('tanggalAju', { required: 'Tanggal AJU is required' })}
-              className="form-input"
-            />
-            {formErrors.tanggalAju && <p className="form-error">{formErrors.tanggalAju.message}</p>}
-          </div>
+          <DateField
+            label="Tanggal AJU"
+            fieldName="tanggalAju"
+            context="main"
+            required
+            register={register('tanggalAju', { required: 'Tanggal AJU is required' })}
+            error={formErrors.tanggalAju?.message}
+            helpText="Tanggal pengajuan dokumen"
+          />
 
-          <div>
-            <label className="form-label required">Tanggal BC11</label>
-            <input
-              type="date"
-              {...register('tanggalBc11', { required: 'Tanggal BC11 is required' })}
-              className="form-input"
-            />
-            {formErrors.tanggalBc11 && <p className="form-error">{formErrors.tanggalBc11.message}</p>}
-          </div>
+          <DateField
+            label="Tanggal BC11"
+            fieldName="tanggalBc11"
+            context="main"
+            required
+            register={register('tanggalBc11', { required: 'Tanggal BC11 is required' })}
+            error={formErrors.tanggalBc11?.message}
+            helpText="Tanggal dokumen BC 1.1"
+          />
+
+          <DateField
+            label="Tanggal Tiba"
+            fieldName="tanggalTiba"
+            context="main"
+            required
+            register={register('tanggalTiba', { required: 'Tanggal Tiba is required' })}
+            error={formErrors.tanggalTiba?.message}
+          />
+
+          <DateField
+            label="Tanggal TTD"
+            fieldName="tanggalTtd"
+            context="main"
+            required
+            register={register('tanggalTtd', { required: 'Tanggal TTD is required' })}
+            error={formErrors.tanggalTtd?.message}
+          />
         </div>
       </div>
 
@@ -304,60 +326,205 @@ export function MainDataForm({ data, onChange, errors }: MainDataFormProps) {
       <div>
         <h3 className="text-lg font-medium text-gray-900 mb-4">Signature Information</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label className="form-label required">Nama TTD</label>
-            <input
-              type="text"
-              {...register('namaTtd', { 
-                required: 'Nama TTD is required',
-                maxLength: { value: 100, message: 'Maximum 100 characters' }
-              })}
-              className="form-input"
-              placeholder="Enter signatory name"
-            />
-            <p className="form-help">Signatory name</p>
-            {formErrors.namaTtd && <p className="form-error">{formErrors.namaTtd.message}</p>}
-          </div>
+          <FormField
+            label="Nama TTD"
+            fieldName="namaTtd"
+            context="main"
+            required
+            type="text"
+            register={register('namaTtd', {
+              required: 'Nama TTD is required',
+              maxLength: { value: 100, message: 'Maximum 100 characters' }
+            })}
+            error={formErrors.namaTtd?.message}
+            maxLength={100}
+          />
 
-          <div>
-            <label className="form-label required">Jabatan TTD</label>
-            <input
-              type="text"
-              {...register('jabatanTtd', { 
-                required: 'Jabatan TTD is required',
-                maxLength: { value: 100, message: 'Maximum 100 characters' }
-              })}
-              className="form-input"
-              placeholder="Enter signatory position"
-            />
-            <p className="form-help">Signatory position</p>
-            {formErrors.jabatanTtd && <p className="form-error">{formErrors.jabatanTtd.message}</p>}
-          </div>
+          <FormField
+            label="Jabatan TTD"
+            fieldName="jabatanTtd"
+            context="main"
+            required
+            type="text"
+            register={register('jabatanTtd', {
+              required: 'Jabatan TTD is required',
+              maxLength: { value: 100, message: 'Maximum 100 characters' }
+            })}
+            error={formErrors.jabatanTtd?.message}
+            maxLength={100}
+          />
 
-          <div>
-            <label className="form-label required">Kota TTD</label>
-            <input
-              type="text"
-              {...register('kotaTtd', { 
-                required: 'Kota TTD is required',
-                maxLength: { value: 100, message: 'Maximum 100 characters' }
-              })}
-              className="form-input"
-              placeholder="Enter signature city"
-            />
-            <p className="form-help">Signature city</p>
-            {formErrors.kotaTtd && <p className="form-error">{formErrors.kotaTtd.message}</p>}
-          </div>
+          <FormField
+            label="Kota TTD"
+            fieldName="kotaTtd"
+            context="main"
+            required
+            type="text"
+            register={register('kotaTtd', {
+              required: 'Kota TTD is required',
+              maxLength: { value: 100, message: 'Maximum 100 characters' }
+            })}
+            error={formErrors.kotaTtd?.message}
+            maxLength={100}
+          />
+        </div>
+      </div>
 
-          <div>
-            <label className="form-label required">Tanggal TTD</label>
-            <input
-              type="date"
-              {...register('tanggalTtd', { required: 'Tanggal TTD is required' })}
-              className="form-input"
-            />
-            {formErrors.tanggalTtd && <p className="form-error">{formErrors.tanggalTtd.message}</p>}
-          </div>
+      {/* Additional BC20 Fields */}
+      <div>
+        <h3 className="text-lg font-medium text-gray-900 mb-4">Additional Information</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <SelectField
+            label="Kode Jenis Impor"
+            fieldName="kodeJenisImpor"
+            context="main"
+            register={register('kodeJenisImpor')}
+            error={formErrors.kodeJenisImpor?.message}
+          >
+            <option value="">Select...</option>
+            <option value="1">1 - Untuk Dipakai</option>
+            <option value="2">2 - Sementara</option>
+            <option value="3">3 - Re-Impor</option>
+          </SelectField>
+
+          <SelectField
+            label="Kode Cara Bayar"
+            fieldName="kodeCaraBayar"
+            context="main"
+            register={register('kodeCaraBayar')}
+            error={formErrors.kodeCaraBayar?.message}
+          >
+            <option value="">Select...</option>
+            <option value="1">1 - Tunai</option>
+            <option value="2">2 - Kredit</option>
+            <option value="3">3 - Lainnya</option>
+          </SelectField>
+
+          <FormField
+            label="Kode Kantor"
+            fieldName="kodeKantor"
+            context="main"
+            type="text"
+            register={register('kodeKantor')}
+            error={formErrors.kodeKantor?.message}
+            maxLength={6}
+          />
+
+          <FormField
+            label="Kode Pelabuhan Muat"
+            fieldName="kodePelMuat"
+            context="main"
+            type="text"
+            register={register('kodePelMuat')}
+            error={formErrors.kodePelMuat?.message}
+            maxLength={5}
+          />
+
+          <FormField
+            label="Kode Pelabuhan Tujuan"
+            fieldName="kodePelTujuan"
+            context="main"
+            type="text"
+            register={register('kodePelTujuan')}
+            error={formErrors.kodePelTujuan?.message}
+            maxLength={5}
+          />
+
+          <FormField
+            label="Kode TPS"
+            fieldName="kodeTps"
+            context="main"
+            type="text"
+            register={register('kodeTps')}
+            error={formErrors.kodeTps?.message}
+          />
+
+          <SelectField
+            label="Kode Tutup PU"
+            fieldName="kodeTutupPu"
+            context="main"
+            register={register('kodeTutupPu')}
+            error={formErrors.kodeTutupPu?.message}
+          >
+            <option value="">Select...</option>
+            <option value="11">11 - BC 1.1</option>
+            <option value="12">12 - BC 1.2</option>
+            <option value="14">14 - BC 1.4</option>
+          </SelectField>
+
+          <SelectField
+            label="Kode Valuta"
+            fieldName="kodeValuta"
+            context="main"
+            register={register('kodeValuta')}
+            error={formErrors.kodeValuta?.message}
+          >
+            <option value="">Select...</option>
+            <option value="USD">USD - US Dollar</option>
+            <option value="IDR">IDR - Indonesian Rupiah</option>
+            <option value="EUR">EUR - Euro</option>
+            <option value="CNY">CNY - Chinese Yuan</option>
+            <option value="JPY">JPY - Japanese Yen</option>
+          </SelectField>
+
+          <NumberField
+            label="FOB"
+            fieldName="fob"
+            context="main"
+            step="0.01"
+            min={0}
+            register={register('fob', {
+              min: { value: 0, message: 'FOB must be positive' }
+            })}
+            error={formErrors.fob?.message}
+          />
+
+          <NumberField
+            label="Freight"
+            fieldName="freight"
+            context="main"
+            step="0.01"
+            min={0}
+            register={register('freight', {
+              min: { value: 0, message: 'Freight must be positive' }
+            })}
+            error={formErrors.freight?.message}
+          />
+
+          <NumberField
+            label="Biaya Tambahan"
+            fieldName="biayaTambahan"
+            context="main"
+            step="0.01"
+            min={0}
+            register={register('biayaTambahan', {
+              min: { value: 0, message: 'Biaya Tambahan must be positive' }
+            })}
+            error={formErrors.biayaTambahan?.message}
+          />
+
+          <NumberField
+            label="Biaya Pengurang"
+            fieldName="biayaPengurang"
+            context="main"
+            step="0.01"
+            min={0}
+            register={register('biayaPengurang', {
+              min: { value: 0, message: 'Biaya Pengurang must be positive' }
+            })}
+            error={formErrors.biayaPengurang?.message}
+          />
+
+          <NumberField
+            label="Jumlah Kontainer"
+            fieldName="jumlahKontainer"
+            context="main"
+            min={1}
+            register={register('jumlahKontainer', {
+              min: { value: 1, message: 'Jumlah Kontainer must be at least 1' }
+            })}
+            error={formErrors.jumlahKontainer?.message}
+          />
         </div>
       </div>
     </div>

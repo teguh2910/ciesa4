@@ -117,7 +117,7 @@ export default function Dashboard() {
               transition={{ duration: 0.6 }}
             >
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
-                <span className="text-gradient">JSON Response Generator</span>
+                <span className="text-gradient">GO-CIESA-4.0</span>
               </h1>
               <p className="text-xl sm:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto">
                 Generate and send JSON responses for Indonesian customs/import API endpoints. 

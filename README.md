@@ -1,4 +1,4 @@
-# JSON Response Generator - Go Backend
+# GO-CIESA-4.0 - Go Backend
 
 A high-performance Golang backend that replaces the Python Flask implementation while maintaining full API compatibility with the Next.js frontend.
 
@@ -11,6 +11,8 @@ A high-performance Golang backend that replaces the Python Flask implementation 
 - **File Upload** with validation and size limits
 - **Template Generation** with sample data and proper structure
 - **API Integration** with multiple authentication methods
+- **OAuth 2.0 Support** for CEISA 4.0 API authentication
+- **Automatic Token Refresh** with secure token management
 
 ### 🏗️ Architecture
 - **Clean Architecture** with separated concerns
@@ -127,6 +129,13 @@ All endpoints maintain compatibility with the Python Flask implementation:
 - `POST /api/test-connection` - Test API connection
 - `POST /api/send-to-api` - Send data to external API
 
+### OAuth 2.0 Authentication
+- `POST /api/oauth/login` - OAuth 2.0 login with CEISA 4.0 credentials
+- `POST /api/oauth/refresh` - Refresh access token
+- `GET /api/oauth/status` - Get current authentication status
+- `GET/POST /api/oauth/config` - Manage OAuth 2.0 configuration
+- `POST /api/oauth/logout` - Clear stored tokens
+
 ## 🧪 Development
 
 ### Available Commands
@@ -165,10 +174,10 @@ make docker-run
 
 ```bash
 # Build
-docker build -t json-response-generator:latest .
+docker build -t go-ciesa-4.0:latest .
 
 # Run
-docker run -p 5000:5000 --env-file .env json-response-generator:latest
+docker run -p 5000:5000 --env-file .env go-ciesa-4.0:latest
 ```
 
 ## 🔄 Migration from Python

@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
-import { Settings, TestTube, Save, AlertCircle, CheckCircle, Globe } from 'lucide-react';
+import { Settings, TestTube, Save, AlertCircle, CheckCircle, Globe, Key } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useConfig } from '@/hooks/useApi';
 import { AppConfig } from '@/types';
+import OAuthConfigComponent from '@/components/oauth/OAuthConfig';
 
 const defaultConfig: AppConfig = {
   api_endpoint: '',
@@ -21,6 +22,7 @@ export default function ApiConfigPage() {
   const [config, setConfig] = useState<AppConfig>(defaultConfig);
   const [loading, setLoading] = useState(false);
   const [testResult, setTestResult] = useState<{ success: boolean; message: string } | null>(null);
+  const [activeTab, setActiveTab] = useState<'traditional' | 'oauth'>('oauth');
 
   const { execute: loadConfig, loading: configLoading } = useConfig();
 
@@ -121,8 +123,39 @@ export default function ApiConfigPage() {
           </p>
         </div>
 
-        {/* Configuration Form */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+        {/* Tab Navigation */}
+        <div className="mb-6">
+          <nav className="flex space-x-8" aria-label="Tabs">
+            <button
+              onClick={() => setActiveTab('oauth')}
+              className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'oauth'
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              <Key className="w-4 h-4 inline mr-2" />
+              OAuth 2.0 (CEISA 4.0)
+            </button>
+            <button
+              onClick={() => setActiveTab('traditional')}
+              className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'traditional'
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              <Settings className="w-4 h-4 inline mr-2" />
+              Traditional API
+            </button>
+          </nav>
+        </div>
+
+        {/* Tab Content */}
+        {activeTab === 'oauth' ? (
+          <OAuthConfigComponent />
+        ) : (
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
           <div className="flex items-center mb-6">
             <Settings className="w-5 h-5 text-primary-600 mr-2" />
             <h2 className="text-lg font-semibold text-gray-900">API Settings</h2>
@@ -228,7 +261,6 @@ export default function ApiConfigPage() {
               Save Configuration
             </button>
           </div>
-        </div>
 
         {/* Test Result */}
         {testResult && (
@@ -254,6 +286,8 @@ export default function ApiConfigPage() {
               </p>
             </div>
           </motion.div>
+        )}
+        </div>
         )}
 
         {/* Info Section */}

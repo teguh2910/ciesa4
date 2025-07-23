@@ -16,18 +16,19 @@ import (
 
 func setupTestRouter() (*gin.Engine, *Handlers) {
 	gin.SetMode(gin.TestMode)
-	
+
 	// Initialize services
 	jsonGenerator := services.NewJsonGenerator()
 	excelHandler := services.NewExcelHandler()
-	apiClient := services.NewApiClient()
-	
+	oauthService := services.NewOAuthService()
+	apiClient := services.NewApiClientWithOAuth(oauthService)
+
 	// Initialize handlers
-	h := New(jsonGenerator, excelHandler, apiClient)
-	
+	h := New(jsonGenerator, excelHandler, apiClient, oauthService)
+
 	// Setup router
 	router := gin.New()
-	
+
 	return router, h
 }
 
@@ -83,19 +84,19 @@ func TestGenerateJson(t *testing.T) {
 
 	// Test data
 	testData := map[string]interface{}{
-		"asalData":     "S",
-		"disclaimer":   "1",
-		"flagVd":       "Y",
-		"idPengguna":   "TEST_USER",
-		"cif":          1000000.0,
-		"bruto":        100.0,
-		"netto":        95.0,
-		"barang":       []interface{}{},
-		"entitas":      []interface{}{},
-		"kemasan":      []interface{}{},
-		"kontainer":    []interface{}{},
-		"dokumen":      []interface{}{},
-		"pengangkut":   []interface{}{},
+		"asalData":   "S",
+		"disclaimer": "1",
+		"flagVd":     "Y",
+		"idPengguna": "TEST_USER",
+		"cif":        1000000.0,
+		"bruto":      100.0,
+		"netto":      95.0,
+		"barang":     []interface{}{},
+		"entitas":    []interface{}{},
+		"kemasan":    []interface{}{},
+		"kontainer":  []interface{}{},
+		"dokumen":    []interface{}{},
+		"pengangkut": []interface{}{},
 	}
 
 	requestBody := models.GenerateJsonRequest{
@@ -105,7 +106,7 @@ func TestGenerateJson(t *testing.T) {
 	jsonData, _ := json.Marshal(requestBody)
 	req, _ := http.NewRequest("POST", "/api/generate-json", bytes.NewBuffer(jsonData))
 	req.Header.Set("Content-Type", "application/json")
-	
+
 	w := httptest.NewRecorder()
 	router.ServeHTTP(w, req)
 
@@ -164,7 +165,7 @@ func TestTestConnection(t *testing.T) {
 	jsonData, _ := json.Marshal(requestBody)
 	req, _ := http.NewRequest("POST", "/api/test-connection", bytes.NewBuffer(jsonData))
 	req.Header.Set("Content-Type", "application/json")
-	
+
 	w := httptest.NewRecorder()
 	router.ServeHTTP(w, req)
 
@@ -173,7 +174,7 @@ func TestTestConnection(t *testing.T) {
 	var response models.ApiResponse
 	err := json.Unmarshal(w.Body.Bytes(), &response)
 	assert.NoError(t, err)
-	
+
 	// Should return response even if connection fails
 	responseData, ok := response.Data.(map[string]interface{})
 	assert.True(t, ok)

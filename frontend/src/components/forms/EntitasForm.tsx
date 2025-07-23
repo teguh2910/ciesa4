@@ -5,6 +5,7 @@ import { useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { Plus, Trash2, Building2 } from 'lucide-react';
 import { Entitas } from '@/types';
 import { cn } from '@/lib/utils';
+import { FormField, SelectField, NumberField } from './FormField';
 
 interface EntitasFormProps {
   data: { entitas: Entitas[] };
@@ -118,51 +119,57 @@ export function EntitasForm({ data, onChange, errors }: EntitasFormProps) {
                 <div className="space-y-4">
                   <h5 className="font-medium text-gray-900">Basic Information</h5>
                   
-                  <div>
-                    <label className="form-label required">Seri Entitas</label>
-                    <input
-                      type="number"
-                      {...register(`entitas.${index}.seriEntitas`, { required: true })}
-                      className="form-input"
-                      defaultValue={index + 1}
-                    />
-                  </div>
+                  <NumberField
+                    label="Seri Entitas"
+                    fieldName="seriEntitas"
+                    context="entitas"
+                    required
+                    register={register(`entitas.${index}.seriEntitas`, { required: true })}
+                    value={index + 1}
+                  />
 
-                  <div>
-                    <label className="form-label required">Nama Entitas</label>
-                    <input
-                      type="text"
-                      {...register(`entitas.${index}.namaEntitas`, { required: true })}
-                      className="form-input"
-                      placeholder="Enter entity name"
-                    />
-                  </div>
+                  <FormField
+                    label="Nama Entitas"
+                    fieldName="namaEntitas"
+                    context="entitas"
+                    required
+                    type="text"
+                    register={register(`entitas.${index}.namaEntitas`, { required: true })}
+                  />
 
-                  <div>
-                    <label className="form-label required">Kode Entitas</label>
-                    <select {...register(`entitas.${index}.kodeEntitas`, { required: true })} className="form-input">
-                      <option value="">Select...</option>
-                      <option value="1">1 - Importir</option>
-                      <option value="2">2 - Eksportir</option>
-                      <option value="3">3 - PPJK</option>
-                      <option value="4">4 - Pengangkut</option>
-                      <option value="5">5 - Pemilik Barang</option>
-                      <option value="6">6 - Penjual</option>
-                      <option value="7">7 - Pembeli</option>
-                      <option value="8">8 - Pemusatan</option>
-                      <option value="9">9 - Lainnya</option>
-                    </select>
-                  </div>
+                  <SelectField
+                    label="Kode Entitas"
+                    fieldName="kodeEntitas"
+                    context="entitas"
+                    required
+                    register={register(`entitas.${index}.kodeEntitas`, { required: true })}
+                  >
+                    <option value="">Select...</option>
+                    <option value="1">1 - Importir</option>
+                    <option value="4">4 - Pengangkut</option>
+                    <option value="7">7 - Pembeli</option>
+                    <option value="9">9 - Penjual</option>
+                    <option value="10">10 - Pemilik Barang</option>
+                    <option value="11">11 - Lainnya</option>
+                  </SelectField>
 
-                  <div>
-                    <label className="form-label required">Alamat Entitas</label>
-                    <textarea
-                      {...register(`entitas.${index}.alamatEntitas`, { required: true })}
-                      className="form-input"
-                      rows={3}
-                      placeholder="Enter entity address"
-                    />
-                  </div>
+                  <FormField
+                    label="Alamat Entitas"
+                    fieldName="alamatEntitas"
+                    context="entitas"
+                    required
+                    type="textarea"
+                    register={register(`entitas.${index}.alamatEntitas`, { required: true })}
+                  />
+
+                  <FormField
+                    label="Nomor Identitas"
+                    fieldName="nomorIdentitas"
+                    context="entitas"
+                    required
+                    type="text"
+                    register={register(`entitas.${index}.nomorIdentitas`, { required: true })}
+                  />
                 </div>
 
                 {/* Additional Information */}

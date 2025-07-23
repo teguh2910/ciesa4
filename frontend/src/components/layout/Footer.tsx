@@ -17,7 +17,7 @@ export function Footer() {
               </div>
               <div>
                 <h3 className="text-lg font-semibold text-gray-900">
-                  JSON Response Generator
+                  GO-CIESA-4.0
                 </h3>
                 <p className="text-sm text-gray-500">
                   Indonesian Customs API Tool
@@ -91,7 +91,7 @@ export function Footer() {
         <div className="mt-8 pt-8 border-t border-gray-200">
           <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
             <div className="text-sm text-gray-500">
-              © {currentYear} JSON Response Generator. Built for Indonesian customs integration.
+              © {currentYear} GO-CIESA-4.0. Built for Indonesian customs integration.
             </div>
             
             <div className="flex items-center space-x-6">
