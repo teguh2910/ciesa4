@@ -1,265 +1,173 @@
-# GO-CIESA-4.0 - Go Backend
+# GO-CIESA-4.0
 
-A high-performance Golang backend that replaces the Python Flask implementation while maintaining full API compatibility with the Next.js frontend.
+A modern, high-performance solution for generating and sending JSON responses to Indonesian customs/import API endpoints. Built with **Next.js frontend** and **Go API backend** for optimal performance, scalability, and user experience.
 
-## 🚀 Features
+## 🚀 Quick Start with Docker
 
-### 🔧 Core Functionality
+The easiest way to get started is using the pre-built Docker image:
+
+```bash
+# Pull the Docker image
+docker pull teguhyuhono/gociesa:latest
+
+# Run the container
+docker run -d \
+  --name go-ciesa-app \
+  -p 80:80 \
+  -v go-ciesa-uploads:/uploads \
+  -v go-ciesa-logs:/logs \
+  --restart unless-stopped \
+  teguhyuhono/gociesa:latest
+```
+
+Once running, access the application at:
+- **Main Application**: http://localhost
+- **API Endpoints**: http://localhost/api/
+- **Health Check**: http://localhost/health
+
+### Using Docker Compose
+
+Alternatively, you can use Docker Compose:
+
+```bash
+# Create a docker-compose.yml file
+cat > docker-compose.yml << EOL
+version: '3.8'
+
+services:
+  app:
+    image: teguhyuhono/gociesa:latest
+    container_name: go-ciesa-app
+    ports:
+      - "80:80"
+    environment:
+      - TZ=UTC
+      - NODE_ENV=production
+      - GIN_MODE=release
+    volumes:
+      - uploads:/uploads
+      - logs:/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+volumes:
+  uploads:
+    driver: local
+  logs:
+    driver: local
+EOL
+
+# Start the application
+docker-compose up -d
+```
+
+## ✨ Features
+
+### 🌐 Modern Web Interface (Next.js)
+- **React-based dashboard** with responsive Tailwind CSS design
+- **Step-by-step wizard forms** with real-time validation
+- **Drag-and-drop Excel upload** with progress indicators
+- **Syntax-highlighted JSON preview** with copy/download functionality
+- **Real-time API status monitoring** and health checks
+- **Mobile-first responsive design** optimized for all devices
+
+### 🔧 Go API Backend
 - **RESTful API** built with Gin framework and CORS support
-- **Excel Processing** with excelize for .xlsx/.xls file handling
-- **JSON Generation** for Indonesian customs API format
-- **File Upload** with validation and size limits
-- **Template Generation** with sample data and proper structure
-- **API Integration** with multiple authentication methods
+- **High-performance Excel processing** with excelize library
+- **Comprehensive data validation** using Go structs and validation tags
+- **Multiple authentication methods** (API Key, Basic Auth, No Auth)
 - **OAuth 2.0 Support** for CEISA 4.0 API authentication
 - **Automatic Token Refresh** with secure token management
 
-### 🏗️ Architecture
-- **Clean Architecture** with separated concerns
-- **Dependency Injection** for testability
-- **Structured Logging** with logrus
-- **Configuration Management** via environment variables
-- **Error Handling** with proper HTTP status codes
-- **Middleware Support** for cross-cutting concerns
-
-### 📊 Performance
-- **High Concurrency** with Goroutines
-- **Memory Efficient** Excel processing
-- **Fast JSON Marshaling** with native Go types
-- **Optimized File Handling** with streaming
-- **Connection Pooling** for HTTP clients
-
-## 🛠️ Installation
-
-### Prerequisites
-- Go 1.21 or higher
-- Git
-
-### Quick Start
-
-1. **Clone and setup**
-   ```bash
-   git clone <repository>
-   cd go-backend
-   cp .env.example .env
-   ```
-
-2. **Install dependencies**
-   ```bash
-   make deps
-   ```
-
-3. **Run the application**
-   ```bash
-   make run
-   ```
-
-4. **For development with hot reload**
-   ```bash
-   make install-tools
-   make dev
-   ```
-
-## 📁 Project Structure
-
-```
-go-backend/
-├── main.go                 # Application entry point
-├── internal/
-│   ├── config/            # Configuration management
-│   │   └── config.go
-│   ├── handlers/          # HTTP handlers
-│   │   └── handlers.go
-│   ├── middleware/        # HTTP middleware
-│   │   └── error.go
-│   ├── models/           # Data models
-│   │   └── models.go
-│   └── services/         # Business logic
-│       ├── json_generator.go
-│       ├── excel_handler.go
-│       └── api_client.go
-├── go.mod                # Go modules
-├── go.sum                # Dependencies lock
-├── Dockerfile            # Docker configuration
-├── Makefile             # Build automation
-└── README.md            # This file
-```
-
-## 🔧 Configuration
-
-### Environment Variables
-
-Create a `.env` file based on `.env.example`:
-
-```bash
-# Server Configuration
-API_HOST=127.0.0.1
-API_PORT=5000
-DEBUG=true
-FRONTEND_URL=http://localhost:3000
-
-# File Upload Configuration
-MAX_FILE_SIZE=16777216  # 16MB in bytes
-
-# External API Configuration
-API_ENDPOINT=https://your-api-endpoint.com/api/data
-API_KEY=your-api-key-here
-API_USERNAME=your-username
-API_PASSWORD=your-password
-API_TIMEOUT=30
-```
-
 ## 📡 API Endpoints
 
-All endpoints maintain compatibility with the Python Flask implementation:
+- **Health & Configuration**
+  - `GET /api/health` - Health check
+  - `GET /api/config` - Get application configuration
 
-### Health & Configuration
-- `GET /api/health` - Health check
-- `GET /api/config` - Get application configuration
+- **Excel Operations**
+  - `POST /api/upload-excel` - Upload and parse Excel files
+  - `GET /api/download-template` - Download Excel template
 
-### Excel Operations
-- `POST /api/upload-excel` - Upload and parse Excel files
-- `GET /api/download-template` - Download Excel template
+- **JSON Generation**
+  - `POST /api/generate-json` - Generate JSON from form/Excel data
+  - `GET /api/sample-data` - Get sample data
 
-### JSON Generation
-- `POST /api/generate-json` - Generate JSON from form/Excel data
-- `GET /api/sample-data` - Get sample data
+- **API Integration**
+  - `POST /api/test-connection` - Test API connection
+  - `POST /api/send-to-api` - Send data to external API
 
-### API Integration
-- `POST /api/test-connection` - Test API connection
-- `POST /api/send-to-api` - Send data to external API
+- **OAuth 2.0 Authentication**
+  - `POST /api/oauth/login` - OAuth 2.0 login with CEISA 4.0 credentials
+  - `POST /api/oauth/refresh` - Refresh access token
+  - `GET /api/oauth/status` - Get current authentication status
+  - `GET/POST /api/oauth/config` - Manage OAuth 2.0 configuration
+  - `POST /api/oauth/logout` - Clear stored tokens
 
-### OAuth 2.0 Authentication
-- `POST /api/oauth/login` - OAuth 2.0 login with CEISA 4.0 credentials
-- `POST /api/oauth/refresh` - Refresh access token
-- `GET /api/oauth/status` - Get current authentication status
-- `GET/POST /api/oauth/config` - Manage OAuth 2.0 configuration
-- `POST /api/oauth/logout` - Clear stored tokens
-
-## 🧪 Development
-
-### Available Commands
+## 🐳 Container Management
 
 ```bash
-make build         # Build the application
-make run           # Build and run
-make dev           # Run with hot reload
-make test          # Run tests
-make test-coverage # Run tests with coverage
-make fmt           # Format code
-make lint          # Lint code
-make clean         # Clean build artifacts
+# View container status
+docker ps
+
+# View logs
+docker logs go-ciesa-app
+
+# Follow logs in real-time
+docker logs -f go-ciesa-app
+
+# Stop container
+docker stop go-ciesa-app
+
+# Start stopped container
+docker start go-ciesa-app
+
+# Remove container
+docker rm go-ciesa-app
 ```
 
-### Code Quality
+## 🔍 Troubleshooting
 
-- **Formatting**: `make fmt`
-- **Linting**: `make lint` (requires golangci-lint)
-- **Testing**: `make test`
-- **Coverage**: `make test-coverage`
-
-## 🐳 Docker
-
-### Build and Run
-
+### Container won't start
 ```bash
-# Build Docker image
-make docker-build
+# Check container logs
+docker logs go-ciesa-app
 
-# Run with Docker
-make docker-run
+# Check if ports are available
+netstat -tulpn | grep :80
 ```
 
-### Manual Docker Commands
-
+### Service not responding
 ```bash
-# Build
-docker build -t go-ciesa-4.0:latest .
+# Check internal processes
+docker exec -it go-ciesa-app supervisorctl status
 
-# Run
-docker run -p 5000:5000 --env-file .env go-ciesa-4.0:latest
+# Check nginx configuration
+docker exec -it go-ciesa-app nginx -t
 ```
 
-## 🔄 Migration from Python
-
-This Go backend is a **drop-in replacement** for the Python Flask backend:
-
-### ✅ Maintained Features
-- **All API endpoints** with identical request/response formats
-- **Excel processing** with same validation rules
-- **JSON generation** with identical output structure
-- **File upload** with same size limits and validation
-- **Error handling** with same HTTP status codes
-- **CORS configuration** for Next.js frontend
-
-### 🚀 Improvements
-- **Better Performance**: ~10x faster request handling
-- **Lower Memory Usage**: More efficient Excel processing
-- **Better Concurrency**: Native goroutine support
-- **Faster Startup**: Sub-second application startup
-- **Smaller Binary**: Single executable with no dependencies
-
-### 🔧 Configuration Changes
-- Environment variables remain the same
-- Port and host configuration unchanged
-- File paths and structure identical
-
-## 📊 Performance Comparison
-
-| Metric | Python Flask | Go Gin | Improvement |
-|--------|-------------|---------|-------------|
-| Request Latency | ~50ms | ~5ms | 10x faster |
-| Memory Usage | ~100MB | ~20MB | 5x less |
-| Startup Time | ~3s | ~0.3s | 10x faster |
-| Concurrent Requests | ~100/s | ~1000/s | 10x more |
-| Binary Size | ~50MB | ~15MB | 3x smaller |
-
-## 🛡️ Security
-
-- **Input Validation** with struct tags
-- **File Type Validation** for uploads
-- **Size Limits** for file uploads
-- **CORS Protection** with configurable origins
-- **Request Timeout** protection
-- **Error Sanitization** to prevent information leakage
-
-## 📝 Logging
-
-Structured logging with logrus:
-
-```json
-{
-  "level": "info",
-  "msg": "Sending data to API",
-  "endpoint": "https://api.example.com",
-  "method": "POST",
-  "size": 1024,
-  "time": "2024-01-01T12:00:00Z"
-}
+### Permission issues
+```bash
+# Check volume permissions
+docker exec -it go-ciesa-app ls -la /uploads /logs
 ```
 
-## 🤝 Contributing
+## 🏗️ Architecture
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Run `make test` and `make lint`
-6. Submit a pull request
+The Docker container includes:
 
-## 📄 License
+- **Nginx** as reverse proxy (port 80)
+- **Go backend API** (internal port 5001)
+- **Next.js frontend** (internal port 3000)
+- **Supervisor** to manage all processes
 
-This project is licensed under the MIT License.
-
-## 🆘 Support
-
-For issues and questions:
-1. Check the logs: `docker logs <container-id>`
-2. Verify configuration: `curl http://localhost:5000/api/health`
-3. Test connectivity: `curl http://localhost:5000/api/config`
-
-## 🔗 Related Projects
-
-- **Frontend**: Next.js TypeScript application
-- **Original Backend**: Python Flask implementation
-- **Documentation**: API documentation and examples
+The internal Nginx configuration:
+- **Frontend**: All requests to `/` are proxied to Next.js (port 3000)
+- **API**: All requests to `/api/` are proxied to Go backend (port 5001)
+- **Health**: Requests to `/health` are proxied to Go backend
+- **Static Files**: Next.js static files are cached for 1 year
