@@ -245,13 +245,18 @@ func (eh *ExcelHandler) GenerateTemplate() (string, error) {
 		}
 	}
 
-	// Create temporary file
-	tempDir := os.TempDir()
+	// Create temporary file using app directory instead of /tmp
+	tempDir := "/app/temp"
+	if err := os.MkdirAll(tempDir, 0755); err != nil {
+		return "", fmt.Errorf("failed to create temp directory %s: %w", tempDir, err)
+	}
+
 	fileName := fmt.Sprintf("customs_data_template_%s.xlsx", time.Now().Format("20060102"))
 	filePath := filepath.Join(tempDir, fileName)
 
+	// Save the Excel file directly
 	if err := f.SaveAs(filePath); err != nil {
-		return "", fmt.Errorf("failed to save template file: %w", err)
+		return "", fmt.Errorf("failed to save template file %s: %w", filePath, err)
 	}
 
 	return filePath, nil

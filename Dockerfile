@@ -67,21 +67,30 @@ ENTRYPOINT ["dumb-init", "--"]
 CMD ["go", "run", "main.go"]
 
 # Production stage - minimal and secure
-FROM scratch AS production
+FROM alpine:latest AS production
 
-# Copy timezone data and CA certificates from builder
+# Install minimal runtime dependencies and create directories
+RUN apk add --no-cache ca-certificates tzdata coreutils && \
+    addgroup --system --gid 1001 golang && \
+    adduser --system --uid 1001 --ingroup golang golang && \
+    mkdir -p /tmp /uploads /logs /app /app/temp && \
+    chmod 1777 /tmp && \
+    chmod 755 /uploads /logs /app /app/temp && \
+    chown -R golang:golang /uploads /logs /app
+
+# Copy timezone data and CA certificates
 COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
 # Copy the binary
-COPY --from=builder /app/main /main
+COPY --from=builder /app/main /app/main
+RUN chmod +x /app/main && chown golang:golang /app/main
 
-# Create minimal filesystem structure
-COPY --from=builder /etc/passwd /etc/passwd
-COPY --from=builder /etc/group /etc/group
+# Set working directory
+WORKDIR /app
 
-# Set non-root user (nobody)
-USER 65534:65534
+# Set non-root user
+USER golang:golang
 
 # Expose port
 EXPOSE 5001
@@ -94,7 +103,7 @@ ENV TZ=UTC
 
 # Add health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD ["/main", "--health-check"]
+    CMD ["/app/main", "--health-check"]
 
 # Run the application
-ENTRYPOINT ["/main"]
+ENTRYPOINT ["/app/main"]

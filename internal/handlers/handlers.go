@@ -282,10 +282,16 @@ func (h *Handlers) GetSampleData(c *gin.Context) {
 
 // saveUploadedFile saves the uploaded file to a temporary location
 func (h *Handlers) saveUploadedFile(file multipart.File, header *multipart.FileHeader) (string, error) {
-	// Create temporary file
-	tempFile, err := os.CreateTemp("", "upload_*.xlsx")
+	// Use app temp directory instead of /tmp to avoid Alpine Linux issues
+	tempDir := "/app/temp"
+	if err := os.MkdirAll(tempDir, 0755); err != nil {
+		return "", fmt.Errorf("failed to create temp directory %s: %w", tempDir, err)
+	}
+
+	// Create temporary file in the specific directory
+	tempFile, err := os.CreateTemp(tempDir, "upload_*.xlsx")
 	if err != nil {
-		return "", fmt.Errorf("failed to create temporary file: %w", err)
+		return "", fmt.Errorf("failed to create temporary file in %s: %w", tempDir, err)
 	}
 	defer tempFile.Close()
 
@@ -293,7 +299,7 @@ func (h *Handlers) saveUploadedFile(file multipart.File, header *multipart.FileH
 	_, err = io.Copy(tempFile, file)
 	if err != nil {
 		os.Remove(tempFile.Name())
-		return "", fmt.Errorf("failed to save file: %w", err)
+		return "", fmt.Errorf("failed to save file %s: %w", tempFile.Name(), err)
 	}
 
 	return tempFile.Name(), nil
